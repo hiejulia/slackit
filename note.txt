@@ -15,3 +15,34 @@ what bot can do
 
 > message event> trigger when a message is sent back to the bot with direct message to the bot
 //message obj = full data = user , channel
+
+
+//add avoid spam
+>spam the channel
+>> code:
+if (/(hello|hi) (bot|awesomebot)/g.test(msg)) {
+  // Infinite loop spamming the channel every 100 milliseconds
+  setInterval(() => {
+    slack.sendMessage('Spam!', channel.id);
+  }, 100);
+}
+> code to set interval> make sure that use send mess after 1s
+>>setInterval(() => {
+    // Get the current timestamp
+    let currentTime = Date.now();
+        
+    // Make sure we only allow a message once a full second has // passed 
+    if ((currentTime - sentTime) > 1000) {
+
+      slack.sendMesssage('Limiting my messages to 1 per second', channel.id);
+
+      // Set the new sentTime
+      sentTime = Date.now();
+    }
+  }, 100);
+}
+
+> slack api provide timestamp on the channel obj > 
+>>channel.latest.ts
+
+>> sending a direct message

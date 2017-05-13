@@ -112,6 +112,22 @@ slack.on(RTM_EVENTS.MESSAGE, (message) => {
     let msg = message.text.toLowerCase();
 
     if (/(hello|hi) (bot|awesomebot)/g.test(msg)) {
+        //get the time
+        let sentTime = Date.now();
+//         setInterval(() => {
+//     // Get the current timestamp
+//     let currentTime = Date.now();
+        
+//     // Make sure we only allow a message once a full second has // passed 
+//     if ((currentTime - sentTime) > 1000) {
+
+//       slack.sendMesssage('Limiting my messages to 1 per second', channel.id);
+
+//       // Set the new sentTime
+//       sentTime = Date.now();
+//     }
+//   }, 100);
+
       slack.sendMessage(`Hello to you too, ${user.name}!`, channel.id);
     }
   }
