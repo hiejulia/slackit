@@ -62,7 +62,27 @@ console.log(channelNames);
 //get all members of channel
 channels.forEach((channel) => {
      console.log('Members of this channel: ', channel.members);//get all member of a channel
-})
+     //get user id 
+     let members = channel.members.map((id) => {
+         return slack.dataStore.getUserById(id);
+     });
+     
+
+     //bot cannot talk to him > avoid> is_bot in the member obj
+     //filter out the bot from member list
+     members = members.filter((member) =>{
+         return !member.is_bot;
+     });//filter all member accept the bot 
+
+
+     ////each member obj = > has name value
+     let memberNames = members.map((member) => {
+         return member.name
+     }).join(', ');
+     console.log('name of all members in the channel is '+memberNames);
+
+     
+});
 
 
 
