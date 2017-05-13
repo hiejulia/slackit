@@ -21,6 +21,9 @@ const client = redis.createClient();//init redis client
 // initialize the stemmer
 const stemmer = natural.PorterStemmer;
 //end 
+// attach the stemmer to the prototype of String, enabling
+// us to use it as a native String function
+stemmer.attach();//attach stemmer
 const bot = new Bot({
   token: process.env.SLACK_TOKEN,
   autoReconnect: true,
