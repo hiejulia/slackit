@@ -26,6 +26,7 @@
     "@slack/client": "^3.9.0",
     "natural": "^0.5.1",
     "node-wolfram": "0.0.1",
+    "redis": "^2.7.1",
     "slack-client": "^2.0.6",
     "superagent": "^3.5.2",
     "twilio": "^3.0.0"
