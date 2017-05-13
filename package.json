@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start":"nodemon index.js"
   },
   "repository": {
     "type": "git",
@@ -15,5 +16,11 @@
   "bugs": {
     "url": "https://github.com/HienNguyen711/slackit/issues"
   },
-  "homepage": "https://github.com/HienNguyen711/slackit#readme"
+  "homepage": "https://github.com/HienNguyen711/slackit#readme",
+  "devDependencies": {
+    "nodemon": "^1.11.0"
+  },
+  "dependencies": {
+    "@slack/client": "^3.9.0"
+  }
 }
