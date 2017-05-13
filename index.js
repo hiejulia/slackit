@@ -1,6 +1,6 @@
 'use strict';
 
-const Bot = require('./Bot');
+const Bot = require('./bot');
 const request = require('superagent');
 
 const wikiAPI = "https://en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&exintro=&explaintext=&titles="
@@ -12,9 +12,9 @@ const bot = new Bot({
   autoMark: true
 });
 
-bot.respondTo('hello', (message, channel, user) => {
-  channel.send(`Hello to you too, ${user.name}!`)
-}, true);
+// bot.respondTo('hello', (message, channel, user) => {
+//   channel.send(`Hello to you too, ${user.name}!`)
+// }, true);
 
 // Take the message text and return the arguments
 function getArgs(msg) {

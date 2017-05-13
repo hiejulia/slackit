@@ -7,6 +7,9 @@ const RtmClient = require('@slack/client').RtmClient;
 const MemoryDataStore = require('@slack/client').MemoryDataStore;
 const CLIENT_EVENTS = require('@slack/client').CLIENT_EVENTS;
 const RTM_EVENTS = require('@slack/client').RTM_EVENTS;
+/**
+ * @Bot class
+ */
 
 class Bot {
   constructor(opts) {
@@ -20,7 +23,9 @@ class Bot {
       autoReconnect: autoReconnect,
       autoMark: autoMark
     });
-
+/**
+ * @LISTEN FOR OPEN EVENT
+ */
     this.slack.on(CLIENT_EVENTS.RTM.RTM_CONNECTION_OPENED, () => {
       let user = this.slack.dataStore.getUserById(this.slack.activeUserId)
       let team = this.slack.dataStore.getTeamById(this.slack.activeTeamId);
@@ -32,6 +37,10 @@ class Bot {
 
     // Create an ES6 Map to store our regular expressions
     this.keywords = new Map();
+
+    /**
+     * @LISTEN FOR MESSAGE EVENT
+     */
 
     this.slack.on(RTM_EVENTS.MESSAGE, (message) => {
       // Only process text messages
