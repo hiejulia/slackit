@@ -80,9 +80,12 @@ channels.forEach((channel) => {
          return member.name
      }).join(', ');
      console.log('name of all members in the channel is '+memberNames);
-
+//send greeting to everyone
+slack.sendMessage(`Hello ${memberNames}!`, channel.id);
      
-});
+});//end get all channels
+
+
 
 
 

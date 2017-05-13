@@ -6,3 +6,9 @@ api token : xoxb-182470253664-BX6FLRWvCu33PNs2yWAkkJMP
 what bot can do 
 
 //send message to the channel
+
+
+//basic response
+> event is dispatch
+
+> authenticated event
