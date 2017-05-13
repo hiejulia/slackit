@@ -38,7 +38,7 @@ function getChannels(allChannels) {
     }
     return channels;
 }
-
+//get all members 
 
 
 //add event listener for rtm connection open event> called when bot connected to the channel> slack api can subscribe to the event using on  method
@@ -58,7 +58,17 @@ let channelNames =channels.map((channel) => {
     return channel.name
 }).join(', ');
 console.log(channelNames);
-});
+
+//get all members of channel
+channels.forEach((channel) => {
+     console.log('Members of this channel: ', channel.members);//get all member of a channel
+})
+
+
+
+
+
+});//end listen to the open event
 
 
 
