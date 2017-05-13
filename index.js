@@ -7,7 +7,7 @@ const wikiAPI = "https://en.wikipedia.org/w/api.php?format=json&action=query&pro
 const wikiURL = 'https://en.wikipedia.org/wiki/';
 
 const bot = new Bot({
-  token: process.env.SLACK_TOKEN,
+  token: 'xoxb-184031759239-FV9WfNvXZRvE9uK4WRjIzyKH',
   autoReconnect: true,
   autoMark: true
 });
