@@ -24,6 +24,14 @@ const stemmer = natural.PorterStemmer;
 // attach the stemmer to the prototype of String, enabling
 // us to use it as a native String function
 stemmer.attach();//attach stemmer
+
+
+//open weather api 
+const weatherURL = `http://api.openweathermap.org/data/2.5/weather?&units=metric&appid=${process.env.WEATHER_API_KEY}&q=`;
+
+
+
+
 const bot = new Bot({
   token: process.env.SLACK_TOKEN,
   autoReconnect: true,
