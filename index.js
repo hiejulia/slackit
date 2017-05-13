@@ -197,9 +197,30 @@ slack.on(RTM_EVENTS.MESSAGE,(message) => {
 
 //bot remember the command with redis client
 
+// bot.respondTo('store', (message, channel, user) => {
+//   let msg = getArgs(message.text);
 
+//   client.set(user.name, msg, (err) => {
+//     if (err) {
+//       channel.send('Oops! I tried to store that but something went wrong :(');
+//     } else {
+//       channel.send(`Okay ${user.name}, I will remember that for you.`);
+//     }
+//   });
+// }, true);
 
+// bot.respondTo('retrieve', (message, channel, user) => {
+//   bot.setTypingIndicator(message.channel);
 
+//   client.get(user.name, (err, reply) => {
+//     if (err) {
+//      console.log(err);
+//      return;
+//     }
+
+//     channel.send('Here\'s what I remember: ' + reply);
+//   });
+// });
 
 
 
