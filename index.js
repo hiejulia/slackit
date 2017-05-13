@@ -21,6 +21,15 @@ const bot = new Bot({
   autoMark: true
 });
 
+//listen for redis
+client.on('error', (err) => {
+    console.log('Error ' + err);
+});
+
+client.on('connect', () => {
+  console.log('Connected to Redis!');
+});
+
 //slack constructor take 2 arg > token & opts
 let slack = new RtmClient(token,{
     //set level of log we require
@@ -185,6 +194,18 @@ slack.on(RTM_EVENTS.MESSAGE,(message) => {
 
 
 });//end listen for message event for DM event
+
+//bot remember the command with redis client
+
+
+
+
+
+
+
+
+
+
 
 
 

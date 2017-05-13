@@ -91,3 +91,17 @@ slack.on(RTM_EVENTS.MESSAGE, (message) => {
 ======================================
 >add and remove admin
 >>>
+
+
+
+
+=======================================
+> save and retrieve data via Redis
+>>client.set('hello','HelloWorld');
+client.get('hello',(err, reply) => {
+    if(err){
+        ...
+        return;
+    }
+    ///reply
+})
