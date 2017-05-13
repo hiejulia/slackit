@@ -13,6 +13,8 @@ const token = 'xoxb-182470253664-BX6FLRWvCu33PNs2yWAkkJMP';
 let Bot = require('./Bot');
 const redis = require('redis');//import redis
 
+const client = redis.createClient();//init redis client
+
 const bot = new Bot({
   token: process.env.SLACK_TOKEN,
   autoReconnect: true,
