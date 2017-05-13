@@ -23,6 +23,23 @@ let slack = new RtmClient(token,{
     autoMark: true 
 });
 
+//get all the channels
+//return all the channels
+function getChannels(allChannels) {
+    let channels = [];
+    //loop over all the channels
+    for(let id in allChannels){
+        let channel = allChannels[id];
+        //is this user a member of this channel
+        if(channel.is_member){
+            //if yes > push to array
+            channels.push(channel);
+        }
+    }
+    return channels;
+}
+
+
 
 //add event listener for rtm connection open event> called when bot connected to the channel> slack api can subscribe to the event using on  method
 slack.on(CLIENT_EVENTS.RTM.RTM_CONNECTION_OPENED,() => {
@@ -34,6 +51,18 @@ slack.on(CLIENT_EVENTS.RTM.RTM_CONNECTION_OPENED,() => {
     //log it out
     console.log(`Connected to ${team.name} as ${user.name}`);
 
+//get all the channles 
+let channels =  getChannels(slack.dataStore.channels);
+//use array .map > loop over instance > return array of names of each channel > chain array.join>>convert the names  of each channel
+let channelNames =channels.map((channel) => {
+    return channel.name
+}).join(', ');
+console.log(channelNames);
 });
+
+
+
+
+
 // Start the login process
 slack.start();

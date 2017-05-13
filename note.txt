@@ -1,1 +1,7 @@
 api token : xoxb-182470253664-BX6FLRWvCu33PNs2yWAkkJMP
+/invite botname or /remove botname
+
+
+//test channel > bot_test is created
+what bot can do 
+
