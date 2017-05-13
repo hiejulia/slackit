@@ -46,3 +46,4 @@ if (/(hello|hi) (bot|awesomebot)/g.test(msg)) {
 >>channel.latest.ts
 
 >> sending a direct message
+>> dm object 

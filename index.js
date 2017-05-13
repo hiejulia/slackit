@@ -134,6 +134,35 @@ slack.on(RTM_EVENTS.MESSAGE, (message) => {
 });//end listen for message event
 
 
+//listen for the dm event
+slack.on(RTM_EVENTS.MESSAGE,(message) => {
+    //get user id
+    let user = slack.dataStore.getUserById(message.user)
+    if (user && user.is_bot) {
+    return;
+  }
+
+  let channel = slack.dataStore.getChannelGroupOrDMById(message.channel);//message from with channel
+  if(message.text){
+      let msg = message.text.toLowerCase();//to lowercase
+      if(/uptime/g.test(msg)) {
+          //get dm by name
+          let dm = slack.dataStore.getDMByName(user.name);
+          //let uptime 
+          let uptime = process.uptime();
+          //get the uptime time 
+          let minutes = parseInt(uptime / 60, 10),
+          hours = parseInt(minutes / 60, 10),
+          seconds = parseInt(uptime - (minutes * 60) - ((hours * 60) * 60), 10);
+
+          //send message back to the user 
+          slack.sendMessage(`I have been running for: ${hours} hours, ${minutes} minutes and ${seconds} seconds.`, dm.id);
+
+      }
+  }
+
+
+});//end listen for message event for DM event
 
 
 
