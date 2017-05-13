@@ -5,7 +5,10 @@ const MemoryDataStore = require('@slack/client').MemoryDataStore;
 const RTM_EVENTS = require('@slack/client').RTM_EVENTS;
 const CLIENT_EVENTS = require('@slack/client').CLIENT_EVENTS;
 
-const token = 'xoxb-182470253664-BX6FLRWvCu33PNs2yWAkkJMP';
+const token = 'xoxb-183209869122-rDtl4MlNmAnJdnbbqWdELySV';
+/**
+ * INIT SLACK
+ */
 let slack = new RtmClient(token, {
   
   logLevel: 'error', 
@@ -19,10 +22,10 @@ let slack = new RtmClient(token, {
  */
 slack.on(CLIENT_EVENTS.RTM.RTM_CONNECTION_OPENED, () => {
 
-  let user = slack.dataStore.getUserById(slack.activeUserId);
-  let team = slack.dataStore.getTeamById(slack.activeTeamId);
+  let user = slack.dataStore.getUserById(slack.activeUserId);//get user 
+  let team = slack.dataStore.getTeamById(slack.activeTeamId);//get team
   console.log(`Connected to ${team.name} as ${user.name}`);
-  let channels = getChannels(slack.dataStore.channels);
+  let channels = getChannels(slack.dataStore.channels);//get list of channels
   let channelNames = channels.map((channel) => {
     return channel.name;
   }).join(', ');
@@ -44,14 +47,19 @@ slack.on(CLIENT_EVENTS.RTM.RTM_CONNECTION_OPENED, () => {
       return member.name;
     }).join(', ');
 
-    console.log('Members of this channel: ', memberNames);
+    console.log('Members of this channel: ', memberNames);//get member of this channel
   });
 });
 
-slack.on(CLIENT_EVENTS.RTM.AUTHENTICATED, (rtmStartData) => {
-  console.log(`Logged in as ${rtmStartData.self.name} of team ${rtmStartData.team.name}, but not yet connected to a channel`);
-});
-
+/**
+ * LISTENING FOR AUTHENTICATED EVENT
+ */
+// slack.on(CLIENT_EVENTS.RTM.AUTHENTICATED, (rtmStartData) => {
+//   console.log(`Logged in as ${rtmStartData.self.name} of team ${rtmStartData.team.name}, but not yet connected to a channel`);
+// });
+/**
+ * LISTENING FOR MESSAGE EVENT
+ */
 slack.on(RTM_EVENTS.MESSAGE, (message) => {
   let user = slack.dataStore.getUserById(message.user)
 
@@ -99,13 +107,14 @@ slack.on(RTM_EVENTS.MESSAGE, (message) => {
   }
 });
 
-// Start the login process
-slack.start();
 
 
 
 
 
+/**
+ * FUNCTIONS 
+ */
 
 // Returns an array of all the channels the bot resides in
 function getChannels(allChannels) {
@@ -125,3 +134,7 @@ function getChannels(allChannels) {
 
   return channels;
 }
+
+
+// Start the login process
+slack.start();
