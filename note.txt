@@ -5,3 +5,4 @@ api token : xoxb-182470253664-BX6FLRWvCu33PNs2yWAkkJMP
 //test channel > bot_test is created
 what bot can do 
 
+//send message to the channel
