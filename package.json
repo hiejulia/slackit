@@ -1,0 +1,19 @@
+{
+  "name": "slackit",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/HienNguyen711/slackit.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/HienNguyen711/slackit/issues"
+  },
+  "homepage": "https://github.com/HienNguyen711/slackit#readme"
+}
