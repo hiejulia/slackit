@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon index.js",
-    "ironnodeme": "iron-node index.js"
+    "ironnodeme": "iron-node index.js",
+    "startwithtoken": "SLACK_TOKEN=[YOUR_TOKEN_HERE] nodemon index.js"
   },
   "repository": {
     "type": "git",
@@ -23,6 +24,7 @@
   },
   "dependencies": {
     "@slack/client": "^3.9.0",
+    "superagent": "^3.5.2",
     "twilio": "^3.0.0"
   }
 }

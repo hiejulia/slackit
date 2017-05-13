@@ -10,6 +10,15 @@ const CLIENT_EVENTS = require('@slack/client').CLIENT_EVENTS;
 
 const token = 'xoxb-182470253664-BX6FLRWvCu33PNs2yWAkkJMP';
 
+let Bot = require('./Bot');
+const redis = require('redis');//import redis
+
+const bot = new Bot({
+  token: process.env.SLACK_TOKEN,
+  autoReconnect: true,
+  autoMark: true
+});
+
 //slack constructor take 2 arg > token & opts
 let slack = new RtmClient(token,{
     //set level of log we require
@@ -22,6 +31,16 @@ let slack = new RtmClient(token,{
     //each mess > marked as read
     autoMark: true 
 });
+
+
+
+
+
+
+
+
+
+
 
 //get all the channels
 //return all the channels
