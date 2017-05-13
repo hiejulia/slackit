@@ -12,9 +12,15 @@ const token = 'xoxb-182470253664-BX6FLRWvCu33PNs2yWAkkJMP';
 
 let Bot = require('./Bot');
 const redis = require('redis');//import redis
+const natural = require('natural');//require natural
 
+// initalize the tokenizer
+const tokenizer = new natural.WordTokenizer();
 const client = redis.createClient();//init redis client
-
+//
+// initialize the stemmer
+const stemmer = natural.PorterStemmer;
+//end 
 const bot = new Bot({
   token: process.env.SLACK_TOKEN,
   autoReconnect: true,
@@ -226,6 +232,14 @@ slack.on(RTM_EVENTS.MESSAGE,(message) => {
 
 
 //init todo function > 
+
+//init with tokenize natural 
+bot.respondsTo('',(message, channel, user) => {
+ let tokenizedMessage = tokenizer.tokenize(message.text);
+
+  bot.send(`Tokenized message: ${JSON.stringify(tokenizedMessage)}`, channel);
+
+});
 
 
 
