@@ -75,14 +75,16 @@ slack.on(RTM_EVENTS.MESSAGE, (message) => {
 
   console.log(channel.id);
 
-  slack.sendMessage('Hello!', channel.id, (err, msg) => {
-    console.log('ret:', err, msg);
-  });
+//   slack.sendMessage('Hello!', channel.id, (err, msg) => {
+//     console.log('ret:', err, msg);
+//   });
 
   if (message.text) {
     let msg = message.text.toLowerCase();
 
-
+/**
+ * uptime
+ */
 
     if (/uptime/g.test(msg)) {
       debugger;
@@ -112,6 +114,18 @@ slack.on(RTM_EVENTS.MESSAGE, (message) => {
       
       // The sent message is also of the 'message' object type
       slack.sendMessage(`Hello to you too, ${user.name}!Welcome to the ${channel.name}`, channel.id, (err, msg) => {
+        console.log('stuff:', err, msg);
+      });
+    }
+
+    /**
+     * ask time
+     */
+    if (/(time|date) (bot|assistant)/g.test(msg)) {
+      
+      // The sent message is also of the 'message' object type
+      let date = Date.now();
+      slack.sendMessage('the date is', channel.id, (err, msg) => {
         console.log('stuff:', err, msg);
       });
     }
