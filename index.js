@@ -1,165 +1,168 @@
 'use strict';
 
-const RtmClient = require('@slack/client').RtmClient;
-const MemoryDataStore = require('@slack/client').MemoryDataStore;
-const RTM_EVENTS = require('@slack/client').RTM_EVENTS;
-const CLIENT_EVENTS = require('@slack/client').CLIENT_EVENTS;
+const Bot = require('./Bot');
+const request = require('superagent');
 
-const token = 'xoxb-184031759239-FV9WfNvXZRvE9uK4WRjIzyKH';
-/**
- * INIT SLACK
- */
-let slack = new RtmClient(token, {
-  
-  logLevel: 'error', 
-  dataStore: new MemoryDataStore(),
+const wikiAPI = "https://en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&exintro=&explaintext=&titles="
+const wikiURL = 'https://en.wikipedia.org/wiki/';
+
+const bot = new Bot({
+  token: process.env.SLACK_TOKEN,
   autoReconnect: true,
-  autoMark: true 
+  autoMark: true
 });
 
-/**
- * LISTENING FOR CONNECTED OPEN
- */
-slack.on(CLIENT_EVENTS.RTM.RTM_CONNECTION_OPENED, () => {
+bot.respondTo('hello', (message, channel, user) => {
+  channel.send(`Hello to you too, ${user.name}!`)
+}, true);
 
-  let user = slack.dataStore.getUserById(slack.activeUserId);//get user 
-  let team = slack.dataStore.getTeamById(slack.activeTeamId);//get team
-  console.log(`Connected to ${team.name} as ${user.name}`);
-  let channels = getChannels(slack.dataStore.channels);//get list of channels
-  let channelNames = channels.map((channel) => {
-    return channel.name;
-  }).join(', ');
+// Take the message text and return the arguments
+function getArgs(msg) {
+  return msg.split(' ').slice(1);
+}
 
-  console.log(`Currently in: ${channelNames}`)
+function getWikiSummary(term, cb) {
+  // replace spaces with unicode
+  let parameters = term.replace(/ /g, '%20');
 
-  
-  channels.forEach((channel) => {
-    
-    let members = channel.members.map((id) => {
-      return slack.dataStore.getUserById(id);
+  request
+    .get(wikiAPI + parameters)
+    .end((err, res) => {
+      if (err) {
+        cb(err);
+        return;
+      }
+
+      let url = wikiURL + parameters;
+
+      cb(null, JSON.parse(res.text), url);
     });
+}
 
-    
-    members = members.filter((member) => {
-      return !member.is_bot;
-    });
-    let memberNames = members.map((member) => {
-      return member.name;
-    }).join(', ');
+bot.respondTo('roll', (message, channel, user) => {
+  // get the members of the channel
+  const members = bot.getMembersByChannel(channel);
 
-    console.log('Members of this channel: ', memberNames);//get member of this channel
-  });
-});
+  // make sure there actually members to interact with. If there
+  // aren’t then it usually means that the command was given in a 
+  // direct message
+  if (!members) {
+    bot.send('You have to challenge someone in a channel, not a direct message!', channel);
+    return;
+  }
 
-/**
- * LISTENING FOR AUTHENTICATED EVENT
- */
-// slack.on(CLIENT_EVENTS.RTM.AUTHENTICATED, (rtmStartData) => {
-//   console.log(`Logged in as ${rtmStartData.self.name} of team ${rtmStartData.team.name}, but not yet connected to a channel`);
-// });
+  // get the arguments from the message body
+  let args = getArgs(message.text);
 
-//=====================================
+  // the user shouldn't challenge themselves
+  if (args.indexOf(user.name) > -1) {
+    bot.send(`Challenging yourself is probably not the best use of your or my time, ${user.name}`, channel);
+    return;
+  }
 
-/**
- * LISTENING FOR MESSAGE EVENT
- */
+  // if args is empty, return with a warning
+  if (args.length < 1) {
+    bot.send('You have to provide the name of the person you wish to challenge!', channel);
+    return;
+  }
 
-slack.on(RTM_EVENTS.MESSAGE, (message) => {
-  let user = slack.dataStore.getUserById(message.user)
+  // does the opponent exist in this channel?
+  if (members.indexOf(args[0]) < 0) {
+    bot.send(`Sorry ${user.name}, but I either can't find ${args[0]} in this channel, or they are a bot!`, channel);
+    return;
+  }
 
+  // Roll two random numbers between 0 and 100
+  let firstRoll = Math.round(Math.random() * 100);
+  let secondRoll = Math.round(Math.random() * 100);
+
+  let challenger = user.name;
+  let opponent = args[0];
+
+  // reroll in the unlikely event that it's a tie
+  while (firstRoll === secondRoll) {
+    secondRoll = Math.round(Math.random() * 100);
+  }
+
+  let winner = firstRoll > secondRoll ? challenger : opponent;
+
+  // Using new line characters (\n) to format our response
+  bot.send(
+    `${challenger} fancies their changes against ${opponent}!\n
+${challenger} rolls: ${firstRoll}\n
+${opponent} rolls: ${secondRoll}\n\n
+*${winner} is the winner!*`
+  , channel);
+
+}, true);
+
+
+// Take the message text and return the arguments
+function getArgs(msg) {
+  return msg.split(' ').slice(1);
+}
+
+
+bot.respondTo('help', (message, channel) => {  
+  bot.send(`To use my Wikipedia functionality, type \`wiki\` followed by your search query`, channel); 
+}, true);
+
+bot.respondTo('wiki', (message, channel, user) => {
   if (user && user.is_bot) {
     return;
   }
 
-  let channel = slack.dataStore.getChannelGroupOrDMById(message.channel);
+  // grab the search parameters, but remove the command 'wiki' from the beginning
+  // of the message first
+  let args = message.text.split(' ').slice(1).join(' ');
 
-  console.log(channel.id);
-
-//   slack.sendMessage('Hello!', channel.id, (err, msg) => {
-//     console.log('ret:', err, msg);
-//   });
-
-  if (message.text) {
-    let msg = message.text.toLowerCase();
-
-/**
- * uptime
- */
-
-    if (/uptime/g.test(msg)) {
-      debugger;
-
-      if (!user.is_admin) {        
-        slack.sendMessage(`Sorry ${user.name}, but that functionality is only for admins.`, channel.id);
-        return;
-      } 
-
-      let dm = slack.dataStore.getDMByName(user.name);
-
-      let uptime = process.uptime();
-
-      // get the uptime in hours, minutes and seconds
-      let minutes = parseInt(uptime / 60, 10),
-          hours = parseInt(minutes / 60, 10),
-          seconds = parseInt(uptime - (minutes * 60) - ((hours * 60) * 60), 10);
-
-      slack.sendMessage(`I have been running for: ${hours} hours, ${minutes} minutes and ${seconds} seconds.`, dm.id);
-    }
-
-    /**
-     * hello/hi bot 
-     */
-
-    if (/(hello|hi) (bot|assistant)/g.test(msg)) {
-      
-      // The sent message is also of the 'message' object type
-      slack.sendMessage(`Hello to you too, ${user.name}!Welcome to the ${channel.name}`, channel.id, (err, msg) => {
-        console.log('stuff:', err, msg);
-      });
-    }
-
-    /**
-     * ask time
-     */
-    if (/(time|date) (bot|assistant)/g.test(msg)) {
-      
-      // The sent message is also of the 'message' object type
-      let date = Date.now();
-      slack.sendMessage('the date is', channel.id, (err, msg) => {
-        console.log('stuff:', err, msg);
-      });
-    }
-  }
-});
-
-
-
-
-
-
-/**
- * FUNCTIONS 
- */
-
-// Returns an array of all the channels the bot resides in
-function getChannels(allChannels) {
-  let channels = [];
-
-  // Loop over all channels
-  for (let id in allChannels) {
-    // Get an individual channel
-    let channel = allChannels[id];
-
-    // Is this user a member of the channel?
-    if (channel.is_member) {
-      // If so, push it to the array
-      channels.push(channel);
-    }
+  // if there are no arguments, return
+  if (args.length < 1) {
+    bot.send('I\'m sorry, but you need to provide a search query!', channel);
+    return;
   }
 
-  return channels;
-}
+  // set the typing indicator before we start the wikimedia request
+  // the typing indicator will be removed once a message is sent
+  bot.setTypingIndicator(message.channel);
 
+  getWikiSummary(args, (err, result, url) => {
+    if (err) {
+      bot.send(`I\'m sorry, but something went wrong with your query`, channel);
+      console.error(err);
+      return;
+    }
 
-// Start the login process
-slack.start();
+    let pageID = Object.keys(result.query.pages)[0];
+
+    // -1 indicates that the article doesn't exist
+    if (parseInt(pageID, 10) === -1) {
+      bot.send('That page does not exist yet, perhaps you\'d like to create it:', channel);
+      bot.send(url, channel);
+      return;
+    }
+
+    let page = result.query.pages[pageID];
+    let summary = page.extract;
+
+    if (/may refer to/i.test(summary)) {
+      bot.send('Your search query may refer to multiple things, please be more specific or visit:', channel);
+      bot.send(url, channel);
+      return;
+    }
+
+    if (summary !== '') {
+      bot.send(url, channel);
+
+      let paragraphs = summary.split('\n');
+
+      paragraphs.forEach((paragraph) => {
+        if (paragraph !== '') {
+          bot.send(`> ${paragraph}`, channel);
+        }
+      });
+    } else {
+      bot.send('I\'m sorry, I couldn\'t find anything on that subject. Try another one!', channel);
+    }
+  });
+}, true);
