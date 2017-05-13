@@ -12,3 +12,6 @@ what bot can do
 > event is dispatch
 
 > authenticated event
+
+> message event> trigger when a message is sent back to the bot with direct message to the bot
+//message obj = full data = user , channel

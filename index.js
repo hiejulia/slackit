@@ -93,6 +93,30 @@ slack.sendMessage(`Hello ${memberNames}!`, channel.id);
 
 });//end listen to the open event
 
+// //authenticated event > bot listen to 
+// slack.on(CLIENT_EVENTS.RTM.AUTHENTICATED, (rtmStartData) => {
+//   console.log(`Logged in as ${rtmStartData.self.name} of team ${rtmStartData.team.name}, but not yet connected to a channel`);
+// });//end authenticated event
+
+//listen for message event
+slack.on(RTM_EVENTS.MESSAGE, (message) => {
+  let user = slack.dataStore.getUserById(message.user)
+
+  if (user && user.is_bot) {
+    return;
+  }
+
+  let channel = slack.dataStore.getChannelGroupOrDMById(message.channel);
+
+  if (message.text) {
+    let msg = message.text.toLowerCase();
+
+    if (/(hello|hi) (bot|awesomebot)/g.test(msg)) {
+      slack.sendMessage(`Hello to you too, ${user.name}!`, channel.id);
+    }
+  }
+});//end listen for message event
+
 
 
 
