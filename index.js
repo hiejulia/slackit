@@ -146,6 +146,7 @@ slack.on(RTM_EVENTS.MESSAGE,(message) => {
   if(message.text){
       let msg = message.text.toLowerCase();//to lowercase
       if(/uptime/g.test(msg)) {
+        //   debugger;
           //get dm by name
           let dm = slack.dataStore.getDMByName(user.name);
           //let uptime 

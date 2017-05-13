@@ -89,4 +89,5 @@ slack.on(RTM_EVENTS.MESSAGE, (message) => {
 
 
 ======================================
->
+>add and remove admin
+>>>
