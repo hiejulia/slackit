@@ -13,7 +13,7 @@ const token = '';
 //slack constructor take 2 arg > token & opts
 let slack = new RtmClient(token,{
     //set level of log we require
-    logLevel: 'debug', 
+    logLevel: 'error',
     //init data store for client > load additional helper funcs for store and retrieve data
 
     dataStore: new MemoryDataStore(),
@@ -23,3 +23,17 @@ let slack = new RtmClient(token,{
     autoMark: true 
 });
 
+
+//add event listener for rtm connection open event> called when bot connected to the channel> slack api can subscribe to the event using on  method
+slack.on(CLIENT_EVENTS.RTM.RTM_CONNECTION_OPENED,() => {
+    console.log('connected !');
+    //get user name
+    let user = slack.dataStore.getUserById(slack.activeUserId);
+    //get the team name
+    let team = slack.dataStore.getTeamById(slack.activeTeamId);
+    //log it out
+    console.log(`Connected to ${team.name} as ${user.name}`);
+
+});
+// Start the login process
+slack.start();
