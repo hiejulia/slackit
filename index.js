@@ -5,7 +5,7 @@ const MemoryDataStore = require('@slack/client').MemoryDataStore;
 const RTM_EVENTS = require('@slack/client').RTM_EVENTS;
 const CLIENT_EVENTS = require('@slack/client').CLIENT_EVENTS;
 
-const token = 'xoxb-183209869122-rDtl4MlNmAnJdnbbqWdELySV';
+const token = 'xoxb-184031759239-FV9WfNvXZRvE9uK4WRjIzyKH';
 /**
  * INIT SLACK
  */
@@ -57,9 +57,13 @@ slack.on(CLIENT_EVENTS.RTM.RTM_CONNECTION_OPENED, () => {
 // slack.on(CLIENT_EVENTS.RTM.AUTHENTICATED, (rtmStartData) => {
 //   console.log(`Logged in as ${rtmStartData.self.name} of team ${rtmStartData.team.name}, but not yet connected to a channel`);
 // });
+
+//=====================================
+
 /**
  * LISTENING FOR MESSAGE EVENT
  */
+
 slack.on(RTM_EVENTS.MESSAGE, (message) => {
   let user = slack.dataStore.getUserById(message.user)
 
@@ -70,12 +74,15 @@ slack.on(RTM_EVENTS.MESSAGE, (message) => {
   let channel = slack.dataStore.getChannelGroupOrDMById(message.channel);
 
   console.log(channel.id);
+
   slack.sendMessage('Hello!', channel.id, (err, msg) => {
     console.log('ret:', err, msg);
   });
 
   if (message.text) {
     let msg = message.text.toLowerCase();
+
+
 
     if (/uptime/g.test(msg)) {
       debugger;
@@ -97,10 +104,14 @@ slack.on(RTM_EVENTS.MESSAGE, (message) => {
       slack.sendMessage(`I have been running for: ${hours} hours, ${minutes} minutes and ${seconds} seconds.`, dm.id);
     }
 
-    if (/(hello|hi) (bot|awesomebot)/g.test(msg)) {
+    /**
+     * hello/hi bot 
+     */
+
+    if (/(hello|hi) (bot|assistant)/g.test(msg)) {
       
       // The sent message is also of the 'message' object type
-      slack.sendMessage(`Hello to you too, ${user.name}!`, channel.id, (err, msg) => {
+      slack.sendMessage(`Hello to you too, ${user.name}!Welcome to the ${channel.name}`, channel.id, (err, msg) => {
         console.log('stuff:', err, msg);
       });
     }
