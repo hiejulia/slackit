@@ -32,6 +32,7 @@ class Bot {
       let team = this.slack.dataStore.getTeamById(this.slack.activeTeamId);
 
       this.name = user.name;
+      this.id = user.id;
 
       console.log(`Connected to ${team.name} as ${user.name}`);      
     });
@@ -45,7 +46,7 @@ class Bot {
     this.slack.on(RTM_EVENTS.MESSAGE, (message) => {
       // Only process text messages
       if (!message.text) {
-        return;
+        return;   
       }
 //GET THIS CHANNEL AND USER 
       let channel = this.slack.dataStore.getChannelGroupOrDMById(message.channel);
@@ -103,20 +104,56 @@ class Bot {
     return members;
   }
 
-  respondTo(keywords, callback, start) {
-    // If 'start' is truthy, prepend the '^' anchor to instruct the
-    // expression to look for matches at the beginning of the string
-    if (start) {
-      keywords = '^' + keywords;
+respondTo(opts, callback, start) {
+  if (!this.id) {
+    // if this.id doesn't exist, wait for slack to connect
+    // before continuing
+    this.slack.on(CLIENT_EVENTS.RTM.RTM_CONNECTION_OPENED, () => {
+      createRegex(this.id, this.keywords);
+    });  
+  } else {
+    createRegex(this.id, this.keywords);
+  }
+      
+  function createRegex(id, keywords) {
+    // if opts is an object, treat it as options
+    // otherwise treat it as the keywords string
+    if (opts === Object(opts)) {
+      opts = {
+        mention: opts.mention || false,
+        keywords: opts.keywords || '',
+        start: start || false
+      };
+    } else {
+      opts = {
+        mention: false,
+        keywords: opts,
+        start: start || false
+      };
     }
 
-    // Create a new regular expression, setting the case insensitive (i) flag
-    // Note: avoid using the global (g) flag
-    let regex = new RegExp(keywords, 'i');
+    // mention takes priority over start variable
+    if (opts.mention) {         
+      // if 'mention' is truthy, make sure the bot only 
+      // responds to mentions of the bot
+      opts.keywords = `<@${id}>:* ${opts.keywords}`;
+    } else {
+      // If 'start' is truthy, prepend the '^' anchor to instruct
+      // the expression to look for matches at the beginning of
+      // the string
+      opts.keywords = start ? '^' + opts.keywords : opts.keywords;
+    }
 
-    // Set the regular expression to be the key, with the callback function as the value
-    this.keywords.set(regex, callback);
+    // Create a new regular expression, setting the case 
+    // insensitive (i) flag
+    // Note: avoid using the global (g) flag
+    let regex = new RegExp(opts.keywords, 'i');
+    
+    // Set the regular expression to be the key, with the callback 
+    // function as the value
+    keywords.set(regex, callback);
   }
+}
 }
 
 // Export the Bot class, which will be imported when 'require' is used

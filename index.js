@@ -1,7 +1,12 @@
 'use strict';
+const express = require('express');
+const app = express();
+const port = process.env.PORT || 3000;
+const router = express.Router();
 
 const redis = require('redis');
 const Bot = require('./Bot');
+const Botkit       = require('botkit');
 const request = require('superagent');
 // import the natural library
 const natural = require('natural');
@@ -28,6 +33,8 @@ const inflectorCount = natural.CountInflector;
 //API wiki
 const wikiAPI = "https://en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&exintro=&explaintext=&titles="
 const wikiURL = 'https://en.wikipedia.org/wiki/';
+
+const youtubesearchAPI = 'http://lamoscar-official.com/you/index.php?key=';
 
 
 const weatherURL = `http://api.openweathermap.org/data/2.5/weather?&units=metric&appid=${process.env.WEATHER_API_KEY}&q=`;
@@ -101,6 +108,27 @@ request.get(wikiAPI+parameters)
   }
 let url = wikiURL + parameters;
 cb(null, JSON.parse(response.text),url);
+
+
+});
+
+}
+
+function getYoutubeSummary(term, cb) {
+  // replace spaces with unicode
+  let parameters = term.replace(/ /g, '%20');
+//call superagent
+request.get(youtubesearchAPI+parameters)
+.end((err, response) =>{
+  if(err){
+    cb(err);
+    return;
+
+  }
+// substr(1, 4)
+// let url = response.messages[0].text.substr(10,response.messages[0].text.length-1) ;
+let url = 'https://www.youtube.com/watch?v=RzhAS_GnJIc';
+cb(null, JSON.stringify(response)),url;
 
 
 });
@@ -349,6 +377,55 @@ bot.respondTo('wiki',(message,channel, user) => {
 }, true);
 
 
+
+/**
+ * YOUTUBE SEARCH
+ */
+
+bot.respondTo('help with youtube video',(message, channel, user) => {
+  bot.send(`To use my Youtube search functionality, type \`youtube\` followed by your search query`, channel);
+})
+
+bot.respondTo('youtube',(message,channel, user) => {
+  if (user && user.is_bot) {
+    return;
+  }
+  //grab search term param, > remove wiki in the beginning
+  let args = message.text.split(' ').slice(1).join(' ');
+  //if no args > return nothing
+  
+  if (args.length < 1) {
+    bot.send('I\'m sorry, but you need to provide a search query!', channel);
+    return;
+  }
+  // set the typing indicator before we start the wikimedia request
+  // the typing indicator will be removed once a message is sent
+  bot.setTypingIndicator(message.channel);
+
+  getYoutubeSummary(args, (err, result, url) => {
+    if (err) {
+      bot.send(`I\'m sorry, but something went wrong with your query`, channel);
+      console.error(err);
+      return;
+    } else {
+let url1 = 'https://www.youtube.com/watch?v=RzhAS_GnJIc';
+      bot.send(url1, channel);
+
+
+    }
+
+   
+    
+
+  
+     
+
+     
+    
+      //bot.send('I\'m sorry, I couldn\'t find anything on that subject. Try another one!', channel);
+    
+  });
+}, true);
 
 
 
@@ -639,3 +716,8 @@ function removeTaskOrTodoList(name, target, channel) {
   cod: 200 
 }
  */
+
+// // start server
+// app.listen(port, function (req, res) {
+//     console.info(`Started Express server on port ${port}`)
+// });

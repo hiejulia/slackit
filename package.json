@@ -24,6 +24,8 @@
   },
   "dependencies": {
     "@slack/client": "^3.9.0",
+    "botkit": "^0.5.4",
+    "express": "^4.15.2",
     "natural": "^0.5.1",
     "node-wolfram": "0.0.1",
     "redis": "^2.7.1",
@@ -32,6 +34,7 @@
     "slack-client": "^2.0.6",
     "slackbots": "^1.0.2",
     "superagent": "^3.5.2",
-    "twilio": "^3.0.0"
+    "twilio": "^3.0.0",
+    "watson-developer-cloud": "^2.31.1"
   }
 }
