@@ -31,6 +31,30 @@ function getArgs(msg) {
   return msg.split(' ').slice(1);
 }
 
+/**
+ * WIKI API ADD
+ */
+function getWikiSummary(term, cb) {
+  // replace spaces with unicode
+  let parameters = term.replace(/ /g, '%20');
+//call superagent
+request.get(wikiAPI+parameters)
+.end((err, response) =>{
+  if(err){
+    cb(err);
+    return;
+
+  }
+let url = wikiURL + parameters;
+cb(null, JSON.parse(response.text),url);
+
+
+});
+
+}
+
+
+
 let obj = {
   foo: 'bar',
   baz: {
@@ -130,6 +154,29 @@ bot.respondTo('uptime',(message, channel,user) => {
 
       bot.send(`I have been running for: ${hours} hours, ${minutes} minutes and ${seconds} seconds.`, channel);
 })
+
+/**
+ * WIKI API 
+ * 
+ */
+bot.respondTo('help with wiki',(message, channel, user) => {
+  bot.send(`To use my Wikipedia functionality, type \`wiki\` followed by your search query`, channel);
+})
+
+bot.respondTo('wiki',(message,channel, user) => {
+  if (user && user.is_bot) {
+    return;
+  }
+  //grab search term param, > remove wiki in the beginning
+  let args = message.text.split(' ').slice(1).join(' ');
+  //if no args > return nothing
+  
+})
+
+
+
+
+
 
 bot.respondTo('store', (message, channel, user) => {
   let args = getArgs(message.text);
