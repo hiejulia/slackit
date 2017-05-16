@@ -15,9 +15,9 @@ const stemmer = natural.PorterStemmer;
 stemmer.attach();
 //SETUP INFLECTOR
 let inflector = new natural.NounInflector();
+// console.log(inflector.pluralize('students'));
+// console.log(inflector.singularize('student'));
 
-console.log(inflector.pluralize('virus'));
-console.log(inflector.singularize('octopi'));
 
 //API wiki
 const wikiAPI = "https://en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&exintro=&explaintext=&titles="
@@ -151,7 +151,9 @@ client.zrevrange('scores', 0, -1, 'withscores', (err, set) => {
 // })
 
 bot.respondTo('hello bot',(message,channel, user) => {
-  bot.send(`Hello ${user.name}`,channel)
+  bot.send(`Hello ${user.name}`,channel);
+
+
 })
 /**
  * TOKENIZE
