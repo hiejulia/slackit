@@ -158,20 +158,39 @@ bot.respondTo('hello bot',(message,channel, user) => {
 
 //   bot.send(`Tokenized message: ${JSON.stringify(tokenizedMessage)}`, channel);
 // });
-
+/**
+ * STEM
+ */
 // respond to any message that comes through
-bot.respondTo('', (message, channel, user) => {
-  let stemmedMessage = stemmer.stem(message.text);
+// bot.respondTo('', (message, channel, user) => {
+//   let stemmedMessage = stemmer.stem(message.text);
   
-  bot.send(`Stemmed message: ${JSON.stringify(stemmedMessage)}`, channel);
-  let distance = natural.LevenshteinDistance('weather', 'heater');
+//   bot.send(`Stemmed message: ${JSON.stringify(stemmedMessage)}`, channel);
+// //   let distance = natural.LevenshteinDistance('weather', 'heater');
 
-console.log('Distance:', distance); // distance of 10
-let distance2 = natural.LevenshteinDistance('weather', 'weather');
+// // console.log('Distance:', distance); // distance of 10
+// // let distance2 = natural.LevenshteinDistance('weather', 'weather');
 
-console.log('Distance2:', distance2); // distance of 0
-});
+// // console.log('Distance2:', distance2); // distance of 0
+// });
+/**
+ * STRING DISTANCE TEST 
+ */
+bot.respondTo('', (message, channel, user) => {
+  // grab the command from the message's text
+  let command = message.text.split(' ')[0];
 
+  let distance = natural.LevenshteinDistance('weather', command);
+
+  // our typo tolerance, a higher number means a larger 
+  // string distance
+  let tolerance = 2;
+
+  // if the distance between the given command and 'weather' is
+  // only 2 string distance, then that's considered close enough
+  if (distance <= tolerance) {
+    bot.send(`Looks like you were trying to get the weather, ${user.name}!`, channel);
+  }}, true);
 
 bot.respondTo('hey bot',(message,channel, user) => {
   bot.send(`Yes ${user.name}, what's up?`,channel)
