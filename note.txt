@@ -108,3 +108,23 @@ client.get('hello',(err, reply) => {
 
 
 xoxb-184031759239-FV9WfNvXZRvE9uK4WRjIzyKH
+
+
+
+
+
+
+===========================================================
+Bot 
+Chap 2 : hello + check timestamp
+Chap 3: Bot class + wiki integrate(chon)
+Chap 4 : Todo > nang cao len thanh 
+Chap 5 : natural language processing > test sentimental + ask weather 
+Chap 6 : Webhook and / 
+API integration : 
++ Google API
++ https://www.goodreads.com/api
++ http://bnb.data.bl.uk/
++ https://newton.now.sh/
++ http://api.mathjs.org/
++ https://www.programmableweb.com/api/udacity-course-catalog
