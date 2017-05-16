@@ -171,7 +171,55 @@ bot.respondTo('wiki',(message,channel, user) => {
   let args = message.text.split(' ').slice(1).join(' ');
   //if no args > return nothing
   
-})
+  if (args.length < 1) {
+    bot.send('I\'m sorry, but you need to provide a search query!', channel);
+    return;
+  }
+  // set the typing indicator before we start the wikimedia request
+  // the typing indicator will be removed once a message is sent
+  bot.setTypingIndicator(message.channel);
+
+  getWikiSummary(args, (err, result, url) => {
+    if (err) {
+      bot.send(`I\'m sorry, but something went wrong with your query`, channel);
+      console.error(err);
+      return;
+    }
+
+    let pageID = Object.keys(result.query.pages)[0];
+
+    // -1 indicates that the article doesn't exist
+    if (parseInt(pageID, 10) === -1) {
+      bot.send('That page does not exist yet, perhaps you\'d like to create it:', channel);
+      bot.send(url, channel);
+      return;
+    }
+
+    let page = result.query.pages[pageID];
+    let summary = page.extract;
+
+    if (/may refer to/i.test(summary)) {
+      bot.send('Your search query may refer to multiple things, please be more specific or visit:', channel);
+      bot.send(url, channel);
+      return;
+    }
+
+    if (summary !== '') {
+      bot.send(url, channel);
+
+      let paragraphs = summary.split('\n');
+
+      paragraphs.forEach((paragraph) => {
+        if (paragraph !== '') {
+          bot.send(`> ${paragraph}`, channel);
+        }
+      });
+    } else {
+      bot.send('I\'m sorry, I couldn\'t find anything on that subject. Try another one!', channel);
+    }
+  });
+}, true);
+
 
 
 
