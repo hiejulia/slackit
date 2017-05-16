@@ -36,7 +36,6 @@ class Bot {
       console.log(`Connected to ${team.name} as ${user.name}`);      
     });
 
-    // Create an ES6 Map to store our regular expressions
     this.keywords = new Map();
 
     /**
@@ -48,7 +47,7 @@ class Bot {
       if (!message.text) {
         return;
       }
-
+//GET THIS CHANNEL AND USER 
       let channel = this.slack.dataStore.getChannelGroupOrDMById(message.channel);
       let user = this.slack.dataStore.getUserById(message.user);
 
