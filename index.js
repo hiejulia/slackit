@@ -327,6 +327,20 @@ bot.respondTo('hey bot',(message,channel, user) => {
   bot.send(`Yes ${user.name}, what's up?`,channel)
 })
 
+bot.respondTo('github',(message,channel, user) => {
+  request
+  .post(WEBHOOK_URL)
+  .send({
+    username: "Incoming bot",
+    channel: "#general",
+    icon_emoji: ":+1:",
+    text: 'Hello! Here is a fun link: <http://www.github.com|Github is great!>'
+  })
+  .end((err, res) => {
+    console.log(res);
+  });
+})
+
 //say thanks
 bot.respondTo('thanks',(message,channel, user) => {
   bot.send(`You are welcome ${user.name} :)`,channel)
