@@ -7,6 +7,8 @@ const request = require('superagent');
 const natural = require('natural');
 // initalize the tokenizer
 const tokenizer = new natural.WordTokenizer();
+// initialize the stemmer
+const stemmer = natural.PorterStemmer;
 
 //API wiki
 const wikiAPI = "https://en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&exintro=&explaintext=&titles="
