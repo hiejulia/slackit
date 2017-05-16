@@ -13,6 +13,11 @@ const stemmer = natural.PorterStemmer;
 // attach the stemmer to the prototype of String, enabling
 // us to use it as a native String function
 stemmer.attach();
+//SETUP INFLECTOR
+let inflector = new natural.NounInflector();
+
+console.log(inflector.pluralize('virus'));
+console.log(inflector.singularize('octopi'));
 
 //API wiki
 const wikiAPI = "https://en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&exintro=&explaintext=&titles="
