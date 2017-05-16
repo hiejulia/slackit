@@ -1,3 +1,6 @@
+/**
+ * outgoing webhook slack 
+ */
 'use strict';
 const http = require('http');
 // create a simple server with node's built in http module
