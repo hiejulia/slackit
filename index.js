@@ -10,6 +10,10 @@ const tokenizer = new natural.WordTokenizer();
 // initialize the stemmer
 const stemmer = natural.PorterStemmer;
 
+// attach the stemmer to the prototype of String, enabling
+// us to use it as a native String function
+stemmer.attach();
+
 //API wiki
 const wikiAPI = "https://en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&exintro=&explaintext=&titles="
 const wikiURL = 'https://en.wikipedia.org/wiki/';
@@ -154,6 +158,13 @@ bot.respondTo('hello bot',(message,channel, user) => {
 
 //   bot.send(`Tokenized message: ${JSON.stringify(tokenizedMessage)}`, channel);
 // });
+
+// respond to any message that comes through
+bot.respondTo('', (message, channel, user) => {
+  let stemmedMessage = stemmer.stem(message.text);
+  
+  bot.send(`Stemmed message: ${JSON.stringify(stemmedMessage)}`, channel);
+});
 
 
 bot.respondTo('hey bot',(message,channel, user) => {
