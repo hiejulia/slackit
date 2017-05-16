@@ -14,9 +14,14 @@ const stemmer = natural.PorterStemmer;
 // us to use it as a native String function
 stemmer.attach();
 //SETUP INFLECTOR
-let inflector = new natural.NounInflector();
+const inflectorNount = new natural.NounInflector();
 // console.log(inflector.pluralize('students'));
 // console.log(inflector.singularize('student'));
+
+const inflectorCount = natural.CountInflector;
+// console.log(inflectorCount.nth(25));
+// console.log(inflectorCount.nth(42));
+// console.log(inflectorCount.nth(111)); 
 
 
 //API wiki
@@ -198,6 +203,21 @@ bot.respondTo('', (message, channel, user) => {
   if (distance <= tolerance) {
     bot.send(`Looks like you were trying to get the weather, ${user.name}!`, channel);
   }}, true);
+
+/**
+ * inflectorCount
+ */
+bot.respondTo('what day is it', (message, channel) => {
+  let date = new Date();
+
+  // use the ECMAScript Internationalization API to convert 
+  // month numbers into names
+  let locale = 'en-us';
+  let month = date.toLocaleString(locale, { month: 'long' });
+  bot.send(`It is the ${inflectorCount.nth(date.getDate())} of ${month}.`, channel);
+}, true);
+
+
 
 bot.respondTo('hey bot',(message,channel, user) => {
   bot.send(`Yes ${user.name}, what's up?`,channel)
