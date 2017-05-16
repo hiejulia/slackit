@@ -24,9 +24,14 @@ const inflectorCount = natural.CountInflector;
 // console.log(inflectorCount.nth(111)); 
 
 
+
 //API wiki
 const wikiAPI = "https://en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&exintro=&explaintext=&titles="
 const wikiURL = 'https://en.wikipedia.org/wiki/';
+
+
+const weatherURL = `http://api.openweathermap.org/data/2.5/weather?&units=metric&appid=${process.env.WEATHER_API_KEY}&q=`;
+
 
 const client = redis.createClient();
 /**
@@ -557,3 +562,7 @@ function removeTaskOrTodoList(name, target, channel) {
     showTodos(name, channel);
   });  
 }
+
+
+
+//display data more naturally
