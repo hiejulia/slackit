@@ -13,7 +13,7 @@ const client = redis.createClient();
  * BOT
  */
 const bot = new Bot({
-  token: 'xoxb-184031759239-FV9WfNvXZRvE9uK4WRjIzyKH',
+  token: 'xoxb-184207886131-GzYsSVkanZv3CQa73tGDnkja',
   autoReconnect: true,
   autoMark: true
 });
@@ -107,11 +107,17 @@ client.zrevrange('scores', 0, -1, 'withscores', (err, set) => {
   console.log(arr);
 })
 //HELLO
-bot.respondTo(/(hello|hi) (bot|assistantbot)/g.test(msg),(message,channel,user) => {
+// bot.respondTo(/(hello|hi) (bot|assistantbot)/g.test(msg),(message,channel,user) => {
+//   bot.send(`Hello ${user.name}`,channel)
+// })
+
+bot.respondTo('hello bot',(message,channel, user) => {
   bot.send(`Hello ${user.name}`,channel)
 })
 
-
+bot.respondTo('hey bot',(message,channel, user) => {
+  bot.send(`Yes ${user.name}, what's up?`,channel)
+})
 
 
 
