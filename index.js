@@ -119,7 +119,17 @@ bot.respondTo('hey bot',(message,channel, user) => {
   bot.send(`Yes ${user.name}, what's up?`,channel)
 })
 
+//uptime
+bot.respondTo('uptime',(message, channel,user) => {
+  let uptime = process.uptime();
 
+      // get the uptime in hours, minutes and seconds
+      let minutes = parseInt(uptime / 60, 10),
+          hours = parseInt(minutes / 60, 10),
+          seconds = parseInt(uptime - (minutes * 60) - ((hours * 60) * 60), 10);
+
+      bot.send(`I have been running for: ${hours} hours, ${minutes} minutes and ${seconds} seconds.`, channel);
+})
 
 bot.respondTo('store', (message, channel, user) => {
   let args = getArgs(message.text);
