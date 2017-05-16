@@ -13,7 +13,7 @@ const RTM_EVENTS = require('@slack/client').RTM_EVENTS;
 
 class Bot {
   constructor(opts) {
-    let slackToken = opts.token;
+    let slackToken = opts.token;//token
     let autoReconnect = opts.autoReconnect || true;
     let autoMark = opts.autoMark || true;
 
@@ -27,6 +27,7 @@ class Bot {
  * @LISTEN FOR OPEN EVENT
  */
     this.slack.on(CLIENT_EVENTS.RTM.RTM_CONNECTION_OPENED, () => {
+      console.log(this.slack.dataStore);
       let user = this.slack.dataStore.getUserById(this.slack.activeUserId)
       let team = this.slack.dataStore.getTeamById(this.slack.activeTeamId);
 
