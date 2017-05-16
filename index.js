@@ -28,6 +28,8 @@ const inflectorCount = natural.CountInflector;
 // console.log(inflectorCount.nth(42));
 // console.log(inflectorCount.nth(111)); 
 
+const WEBHOOK_URL = 'https://hooks.slack.com/services/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';
+
 
 
 //API wiki
@@ -36,8 +38,8 @@ const wikiURL = 'https://en.wikipedia.org/wiki/';
 
 // const youtubesearchAPI = 'http://lamoscar-official.com/you/index.php?key=';
 
-
-const weatherURL = `http://api.openweathermap.org/data/2.5/weather?&units=metric&appid=${process.env.WEATHER_API_KEY}&q=`;
+const WeatherAPIKey = '';
+const weatherURL = `http://api.openweathermap.org/data/2.5/weather?&units=metric&appid=e215c72486bc176e69502ad13a6b85b2&q=`;
 
 
 const client = redis.createClient();
