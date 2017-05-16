@@ -3,6 +3,10 @@
 const redis = require('redis');
 const Bot = require('./Bot');
 const request = require('superagent');
+// import the natural library
+const natural = require('natural');
+// initalize the tokenizer
+const tokenizer = new natural.WordTokenizer();
 
 //API wiki
 const wikiAPI = "https://en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&exintro=&explaintext=&titles="
@@ -138,6 +142,17 @@ client.zrevrange('scores', 0, -1, 'withscores', (err, set) => {
 bot.respondTo('hello bot',(message,channel, user) => {
   bot.send(`Hello ${user.name}`,channel)
 })
+/**
+ * TOKENIZE
+ */
+// // respond to any message that comes through
+// bot.respondTo('', (message, channel, user) => {
+
+//   let tokenizedMessage = tokenizer.tokenize(message.text);
+
+//   bot.send(`Tokenized message: ${JSON.stringify(tokenizedMessage)}`, channel);
+// });
+
 
 bot.respondTo('hey bot',(message,channel, user) => {
   bot.send(`Yes ${user.name}, what's up?`,channel)
