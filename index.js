@@ -164,6 +164,12 @@ bot.respondTo('', (message, channel, user) => {
   let stemmedMessage = stemmer.stem(message.text);
   
   bot.send(`Stemmed message: ${JSON.stringify(stemmedMessage)}`, channel);
+  let distance = natural.LevenshteinDistance('weather', 'heater');
+
+console.log('Distance:', distance); // distance of 10
+let distance2 = natural.LevenshteinDistance('weather', 'weather');
+
+console.log('Distance2:', distance2); // distance of 0
 });
 
 
