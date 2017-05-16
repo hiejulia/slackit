@@ -55,6 +55,35 @@ client.on('connect', () => {
 function getArgs(msg) {
   return msg.split(' ').slice(1);
 }
+/**
+ * 
+ * @param {*} fake weather api call 
+ * @param {*} callback 
+ */
+function getWeather(location, callback) {
+  // make an AJAX GET call to the Open Weather Map API
+  request.get(weatherURL + location)
+    .end((err, res) => {
+      if (err) throw err;
+      let data = JSON.parse(res.text);
+
+      if (data.cod === '404') {     
+        return callback(new Error('Sorry, I can\'t find that location!')); 
+      }
+
+      console.log(data);
+
+      let weather = [];
+      data.weather.forEach((feature) => {
+        weather.push(feature.description);
+      });
+
+      let description = weather.join(' and ');
+
+      callback(data.name, description, data.main.temp);
+    });
+}
+
 
 /**
  * WIKI API ADD
@@ -222,6 +251,20 @@ bot.respondTo('what day is it', (message, channel) => {
   bot.send(`It is the ${inflectorCount.nth(date.getDate())} of ${month}.`, channel);
 }, true);
 
+bot.respondTo('weather', (message, channel, user) => {
+  let args = getArgs(message.text);
+
+  let city = args.join(' ');
+
+  getWeather(city, (error, fullName, description, temperature) => {
+    if (error) {
+      bot.send(error.message, channel);
+      return;
+    }
+
+    bot.send(`The weather for ${fullName} is ${description} with a temperature of ${Math.round(temperature)} celsius.`, channel);
+  });
+}, true);
 
 
 bot.respondTo('hey bot',(message,channel, user) => {
@@ -566,3 +609,33 @@ function removeTaskOrTodoList(name, target, channel) {
 
 
 //display data more naturally
+
+
+
+
+/**
+ * weather json response
+ * { 
+  coord: { lon: 4.89, lat: 52.37 },
+  weather:
+   [ { id: 310,
+       main: 'Drizzle',
+       description: 'light intensity drizzle rain',
+       icon: '09n' } ],
+  base: 'cmc stations',
+  main: { temp: 7, pressure: 1021, humidity: 93, temp_min: 7, temp_max: 7 },
+  wind: { speed: 5.1, deg: 340 },
+  clouds: { all: 75 },
+  dt: 1458500100,
+  sys:
+   { type: 1,
+     id: 5204,
+     message: 0.0103,
+     country: 'NL',
+     sunrise: 1458452421,
+     sunset: 1458496543 },
+  id: 2759794,
+  name: 'Amsterdam',
+  cod: 200 
+}
+ */
