@@ -27,7 +27,10 @@
     "natural": "^0.5.1",
     "node-wolfram": "0.0.1",
     "redis": "^2.7.1",
+    "request": "^2.81.0",
+    "sentiment": "^4.0.0",
     "slack-client": "^2.0.6",
+    "slackbots": "^1.0.2",
     "superagent": "^3.5.2",
     "twilio": "^3.0.0"
   }

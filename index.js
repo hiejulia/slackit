@@ -115,6 +115,8 @@ bot.respondTo('store', (message, channel, user) => {
   });
 }, true);
 
+debugger;
+
 bot.respondTo('retrieve', (message, channel, user) => {
   bot.setTypingIndicator(message.channel);
 
