@@ -34,7 +34,7 @@ const inflectorCount = natural.CountInflector;
 const wikiAPI = "https://en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&exintro=&explaintext=&titles="
 const wikiURL = 'https://en.wikipedia.org/wiki/';
 
-const youtubesearchAPI = 'http://lamoscar-official.com/you/index.php?key=';
+// const youtubesearchAPI = 'http://lamoscar-official.com/you/index.php?key=';
 
 
 const weatherURL = `http://api.openweathermap.org/data/2.5/weather?&units=metric&appid=${process.env.WEATHER_API_KEY}&q=`;
@@ -45,7 +45,7 @@ const client = redis.createClient();
  * BOT
  */
 const bot = new Bot({
-  token: 'xoxb-184207886131-GzYsSVkanZv3CQa73tGDnkja',
+  token: 'xoxb-184377149010-V87z0FZQvZm2DHKpLHhRXjxi',
   autoReconnect: true,
   autoMark: true
 });
@@ -66,6 +66,32 @@ function getArgs(msg) {
  * 
  * @param {*} fake weather api call 
  * @param {*} callback 
+ */
+/**
+ * weather json response
+ * { 
+  coord: { lon: 4.89, lat: 52.37 },
+  weather:
+   [ { id: 310,
+       main: 'Drizzle',
+       description: 'light intensity drizzle rain',
+       icon: '09n' } ],
+  base: 'cmc stations',
+  main: { temp: 7, pressure: 1021, humidity: 93, temp_min: 7, temp_max: 7 },
+  wind: { speed: 5.1, deg: 340 },
+  clouds: { all: 75 },
+  dt: 1458500100,
+  sys:
+   { type: 1,
+     id: 5204,
+     message: 0.0103,
+     country: 'NL',
+     sunrise: 1458452421,
+     sunset: 1458496543 },
+  id: 2759794,
+  name: 'Amsterdam',
+  cod: 200 
+}
  */
 function getWeather(location, callback) {
   // make an AJAX GET call to the Open Weather Map API
@@ -297,6 +323,11 @@ bot.respondTo('weather', (message, channel, user) => {
 
 bot.respondTo('hey bot',(message,channel, user) => {
   bot.send(`Yes ${user.name}, what's up?`,channel)
+})
+
+//say thanks
+bot.respondTo('thanks',(message,channel, user) => {
+  bot.send(`You are welcome ${user.name} :)`,channel)
 })
 
 //uptime
@@ -690,32 +721,6 @@ function removeTaskOrTodoList(name, target, channel) {
 
 
 
-/**
- * weather json response
- * { 
-  coord: { lon: 4.89, lat: 52.37 },
-  weather:
-   [ { id: 310,
-       main: 'Drizzle',
-       description: 'light intensity drizzle rain',
-       icon: '09n' } ],
-  base: 'cmc stations',
-  main: { temp: 7, pressure: 1021, humidity: 93, temp_min: 7, temp_max: 7 },
-  wind: { speed: 5.1, deg: 340 },
-  clouds: { all: 75 },
-  dt: 1458500100,
-  sys:
-   { type: 1,
-     id: 5204,
-     message: 0.0103,
-     country: 'NL',
-     sunrise: 1458452421,
-     sunset: 1458496543 },
-  id: 2759794,
-  name: 'Amsterdam',
-  cod: 200 
-}
- */
 
 // // start server
 // app.listen(port, function (req, res) {
