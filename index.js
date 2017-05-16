@@ -2,9 +2,16 @@
 
 const redis = require('redis');
 const Bot = require('./Bot');
+const request = require('superagent');
+
+//API wiki
+const wikiAPI = "https://en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&exintro=&explaintext=&titles="
+const wikiURL = 'https://en.wikipedia.org/wiki/';
 
 const client = redis.createClient();
-
+/**
+ * BOT
+ */
 const bot = new Bot({
   token: 'xoxb-184031759239-FV9WfNvXZRvE9uK4WRjIzyKH',
   autoReconnect: true,
@@ -99,6 +106,14 @@ client.zrevrange('scores', 0, -1, 'withscores', (err, set) => {
   }
   console.log(arr);
 })
+//HELLO
+bot.respondTo(/(hello|hi) (bot|assistantbot)/g.test(msg),(message,channel,user) => {
+  bot.send(`Hello ${user.name}`,channel)
+})
+
+
+
+
 
 bot.respondTo('store', (message, channel, user) => {
   let args = getArgs(message.text);
@@ -115,7 +130,7 @@ bot.respondTo('store', (message, channel, user) => {
   });
 }, true);
 
-debugger;
+
 
 bot.respondTo('retrieve', (message, channel, user) => {
   bot.setTypingIndicator(message.channel);
@@ -252,6 +267,11 @@ bot.respondTo('todo', (message, channel, user) => {
       break;
   }
 }, true);
+
+
+
+
+//================================================= todo 
 
 function showTodos(name, channel) {
   client.smembers(name, (err, set) => {
