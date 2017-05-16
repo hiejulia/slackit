@@ -6,7 +6,7 @@ const router = express.Router();
 
 const redis = require('redis');
 const Bot = require('./Bot');
-const Botkit       = require('botkit');
+const Botkit = require('botkit');
 const request = require('superagent');
 // import the natural library
 const natural = require('natural');
