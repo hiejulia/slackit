@@ -15,16 +15,7 @@ const natural = require('natural');
 const sentiment = require('sentiment');
 //classifier
 // const classifier = new natural.BayesClassifier();
-// classifier.addDocument('is it hot', ['temperature', 'question','hot']);
-// classifier.addDocument('is it cold', ['temperature', 'question', 'cold']);
-// classifier.addDocument('will it rain today', ['conditions', 'question', 'rain']);
-// classifier.addDocument('is it drizzling', ['conditions', 'question', 'rain']);
-
 // classifier.train();
-
-
-// console.log(classifier.classify('will it drizzle today'));
-// console.log(classifier.classify('will it be cold out'));
 
 // classifier.save('classifier.json', (err, classifier) => {
 //   // the classifier is saved to the classifier.json file!
@@ -32,17 +23,7 @@ const sentiment = require('sentiment');
 const mongojs = require('mongojs'); 
 const db = mongojs('127.0.0.1:27017/BotDB',['ReferenceDocuments']); 
 
-/**
- * RETRIEVE FROM CLASSIFIER JSON FILE TRAINING
- */
-let classifier;
-natural.BayesClassifier.load('classifier.json', null, (err, clsfr) => {
-  if (err) {
-    throw err;
-  }
 
-   classifier = clsfr;//set up with classifier
-});
 /**
  * TOKENIZER
  */
