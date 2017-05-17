@@ -433,11 +433,10 @@ bot.respondTo('wiki',(message,channel, user) => {
     bot.send(`You need to provide a search query first ${user.name}!`, channel);
     return;
   }
-  // set the typing indicator before we start the wikimedia request
-  // the typing indicator will be removed once a message is sent
+//typing indicator
   bot.setTypingIndicator(message.channel);
   
-
+//getwiki calll
   getWiki(args, (err, result, url) => {
     if (err) {
       bot.send(`I\'m sorry, but something went wrong with your query`, channel);
@@ -449,7 +448,7 @@ bot.respondTo('wiki',(message,channel, user) => {
 
     // -1 indicates that the article doesn't exist
     if (parseInt(pageID, 10) === -1) {
-      bot.send('That page does not exist yet, perhaps you\'d like to create it:', channel);
+      bot.send(`That page does not exist yet, perhaps ${user.name} would like to create it:`, channel);
       bot.send(url, channel);
       return;
     }
@@ -475,7 +474,7 @@ bot.respondTo('wiki',(message,channel, user) => {
         }
       });
     } else {
-      bot.send('I\'m sorry, I couldn\'t find anything on that subject. Try another one!', channel);
+      bot.send(`I\'m sorry, I couldn\'t find anything on subject ${args}. Try another one!`, channel);
     }
   });
 }, true);
