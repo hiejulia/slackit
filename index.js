@@ -59,7 +59,7 @@ const client = redis.createClient();
 /**
  * BOT
  */
-const bot = new Bot({token: 'xoxb-184807119189-mGVowUqVY7s55cMrZBj69G2S', autoReconnect: true, autoMark: true});
+const bot = new Bot({token: 'xoxb-184167926993-SufWQaYJjbXxeWt3XLmiJalQ', autoReconnect: true, autoMark: true});
 //test redis
 client.on('error', (err) => {
   console.log('Error ' + err);
@@ -195,25 +195,25 @@ bot.respondTo('', (message, channel, user) => {
   let tolerance = 2;
 
   //get youtube
-  if (distance <= tolerance) {
+  if (distance <= tolerance && commandyoutube !== 'youtube') {
     bot.send(`Looks like you were trying to get the youtube search, ${user.name}. Try with youtube command!`, channel);
   }
 
   let distance1 = natural.LevenshteinDistance('wiki', commandyoutube);
   //get wiki
-  if (distance1 <= tolerance) {
+  if (distance1 <= tolerance && commandyoutube !== 'wiki') {
     bot.send(`Looks like you were trying to get the wiki search, ${user.name}. Try with wiki command!`, channel);
   }
 
   let distance2 = natural.LevenshteinDistance('google', commandyoutube);
   //get wiki
-  if (distance2 <= tolerance) {
+  if (distance2 <= tolerance && commandyoutube !== 'google') {
     bot.send(`Looks like you were trying to get the google search, ${user.name}. Try with google command!`, channel);
   }
 
   let distance3 = natural.LevenshteinDistance('wolfram', commandyoutube);
   //get wiki
-  if (distance3 <= tolerance) {
+  if (distance3 <= tolerance && commandyoutube !== 'wolfram') {
     bot.send(`Looks like you were trying to get the wolfram search, ${user.name}. Try with wolfram command!`, channel);
   }
 
