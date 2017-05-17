@@ -399,6 +399,16 @@ bot.respondTo('uptime',(message, channel,user) => {
 
       bot.send(`I have been running for: ${hours} hours, ${minutes} minutes and ${seconds} seconds.`, channel);
 })
+/**
+ * WOLFRAM SEARCH
+ */
+bot.respondTo('help with wolfram',(message, channel, user) => {
+  bot.send(`To use my Wolfram functionality, type \`wolfram\` followed by your search query`, channel);
+})
+
+
+
+
 
 /**
  * WIKI API 
@@ -407,8 +417,11 @@ bot.respondTo('uptime',(message, channel,user) => {
 bot.respondTo('help with wiki',(message, channel, user) => {
   bot.send(`To use my Wikipedia functionality, type \`wiki\` followed by your search query`, channel);
 })
-
+/**
+ * wiki
+ */
 bot.respondTo('wiki',(message,channel, user) => {
+  //check not bot
   if (user && user.is_bot) {
     return;
   }
@@ -417,7 +430,7 @@ bot.respondTo('wiki',(message,channel, user) => {
   //if no args > return nothing
   
   if (args.length < 1) {
-    bot.send('I\'m sorry, but you need to provide a search query!', channel);
+    bot.send(`You need to provide a search query first ${user.name}!`, channel);
     return;
   }
   // set the typing indicator before we start the wikimedia request
