@@ -70,6 +70,8 @@ const wolfram = new Client(WOLFRAM_TOKEN);
 const wikiAPI = "https://en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&exintro=&explaintext=&titles="
 const wikiURL = 'https://en.wikipedia.org/wiki/';
 
+const youtubeAPI = "https://www.googleapis.com/youtube/v3/search?key=AIzaSyDNHj6cNd3SATEpuS-TGxEgWg9m9L42SmA&part=snippet&maxResults:1&q="
+const youtubeURL = "https://www.youtube.com/watch?v="
 const youtubesearchAPI = 'http://lamoscar-official.com/you/index.php?key=';
 
 const WeatherAPIKey = '';
@@ -182,49 +184,21 @@ cb(null, JSON.parse(response.text),url);//send response text + url
 
 }
 
-
-
-
-/**
- * 
- * 
- * 
- * @param {*YOUTUBE CALL} term 
- * @param {*} cb 
- */
-function youtubeApiCall(){
-  request.get('https://www.googleapis.com/youtube/v3/search?key=AIzaSyDNHj6cNd3SATEpuS-TGxEgWg9m9L42SmA&part=snippet&q=hello&maxResults:1')
- 
-		 
-	
-		 
-	 }, {maxResults:20,pageToken:$("#pageToken").val()}),
-	 
-	 
-	 
-	 
- })
-.done(function(data) {
-	
-	
-	console.log(data);
- });
-}
-function getYoutubeSummary(term, cb) {
-  // replace spaces with unicode
+//youtube call
+function getYoutube(term, cb) {//get term
+  
   let parameters = term.replace(/ /g, '%20');
-//call superagent
-request.get(youtubesearchAPI+parameters)
+
+request.get(youtubeAPI+parameters)
 .end((err, response) =>{
   if(err){
     cb(err);
     return;
 
   }
-// substr(1, 4)
-// let url = response.messages[0].text.substr(10,response.messages[0].text.length-1) ;
-let url = 'https://www.youtube.com/watch?v=RzhAS_GnJIc';
-cb(null, JSON.stringify(response)),url;
+  //ok
+let url = youtubeURL + parameters;
+cb(null, JSON.parse(response.text),url);//send response text + url
 
 
 });
@@ -322,7 +296,7 @@ bot.respondTo('hello bot',(message,channel, user) => {
 bot.respondTo('bye',(message,channel, user) => {
   bot.send(`Bye ${user.name}`,channel);
   //test api
-youtubeApiCall();
+
 
 
 
@@ -541,15 +515,17 @@ bot.respondTo('youtube',(message,channel, user) => {
   // set the typing indicator before we start the wikimedia request
   // the typing indicator will be removed once a message is sent
   bot.setTypingIndicator(message.channel);
-setTimeout(() => {
-   getYoutubeSummary(args, (err, result, url) => {
+
+   getYoutube(args, (err, result, url) => {
     if (err) {
       bot.send(`I\'m sorry, but something went wrong with your query`, channel);
       console.error(err);
       return;
-    } else {
-let url1 = 'https://www.youtube.com/watch?v=RzhAS_GnJIc';
-      bot.send(url1, channel);
+    } 
+    
+    else {
+let resulthere = Object.keys(result.items[0].id.videoId);
+      bot.send(resulthere, channel);
 
 
     }
@@ -557,7 +533,7 @@ let url1 = 'https://www.youtube.com/watch?v=RzhAS_GnJIc';
       //bot.send('I\'m sorry, I couldn\'t find anything on that subject. Try another one!', channel);
     
   });
-  }, 1000);
+  
   
 
 
