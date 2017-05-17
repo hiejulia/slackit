@@ -12,6 +12,7 @@ const os = require('os');
 const request = require('superagent');
 // import the natural library
 const natural = require('natural');
+const sentiment = require('sentiment');
 //classifier
 // const classifier = new natural.BayesClassifier();
 // classifier.addDocument('is it hot', ['temperature', 'question','hot']);
@@ -28,7 +29,8 @@ const natural = require('natural');
 // classifier.save('classifier.json', (err, classifier) => {
 //   // the classifier is saved to the classifier.json file!
 // });
-
+const mongojs = require('mongojs'); 
+const db = mongojs('127.0.0.1:27017/BotDB',['ReferenceDocuments']); 
 
 /**
  * RETRIEVE FROM CLASSIFIER JSON FILE TRAINING
