@@ -788,7 +788,7 @@ bot.respondTo('todo', (message, channel, user) => {
 
 
 //================================================= todo 
-
+//show list todo 
 function showTodos(name, channel) {
   client.smembers(name, (err, set) => {
     if (err || set.length < 1) {
@@ -814,7 +814,7 @@ function addTask(name, task, channel) {
   bot.send('You added a task!', channel);
   showTodos(name, channel);
 }
-
+//set has read/seen
 function completeTask(name, taskNum, channel) {
   if (Number.isNaN(taskNum)) {
     bot.send('Usage: \`todo complete [TASK_NUMBER]\`', channel);
@@ -850,7 +850,7 @@ function completeTask(name, taskNum, channel) {
     showTodos(name, channel);
   });
 }
-
+//remove task in todo list
 function removeTaskOrTodoList(name, target, channel) {
   if (typeof target === 'string' && target === 'all') {
     client.del(name);
