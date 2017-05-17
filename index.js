@@ -3,7 +3,6 @@ const express = require('express');
 const app = express();
 const port = process.env.PORT || 3000;
 const router = express.Router();
-const $ = require("jquery");
 
 
 const redis = require('redis');
@@ -82,7 +81,7 @@ const client = redis.createClient();
  * BOT
  */
 const bot = new Bot({
-  token: 'xoxb-184602812660-hL62FI3zYX9fFp1nBeovWVzy',
+  token: 'xoxb-184642942900-WGQpE21yUl9SB5RzkWrtRuf4',
   autoReconnect: true,
   autoMark: true
 });
@@ -129,6 +128,11 @@ function getArgs(msg) {
   name: 'Amsterdam',
   cod: 200 
 }
+
+
+
+
+
  */
 function getWeather(location, callback) {
   // make an AJAX GET call to the Open Weather Map API
@@ -178,6 +182,34 @@ cb(null, JSON.parse(response.text),url);//send response text + url
 
 }
 
+
+
+
+/**
+ * 
+ * 
+ * 
+ * @param {*YOUTUBE CALL} term 
+ * @param {*} cb 
+ */
+function youtubeApiCall(){
+  request.get('https://www.googleapis.com/youtube/v3/search?key=AIzaSyDNHj6cNd3SATEpuS-TGxEgWg9m9L42SmA&part=snippet&q=hello&maxResults:1')
+ 
+		 
+	
+		 
+	 }, {maxResults:20,pageToken:$("#pageToken").val()}),
+	 
+	 
+	 
+	 
+ })
+.done(function(data) {
+	
+	
+	console.log(data);
+ });
+}
 function getYoutubeSummary(term, cb) {
   // replace spaces with unicode
   let parameters = term.replace(/ /g, '%20');
@@ -289,6 +321,9 @@ bot.respondTo('hello bot',(message,channel, user) => {
 
 bot.respondTo('bye',(message,channel, user) => {
   bot.send(`Bye ${user.name}`,channel);
+  //test api
+youtubeApiCall();
+
 
 
 })
