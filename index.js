@@ -59,7 +59,7 @@ const client = redis.createClient();
 /**
  * BOT
  */
-const bot = new Bot({token: 'xoxb-184167926993-SufWQaYJjbXxeWt3XLmiJalQ', autoReconnect: true, autoMark: true});
+const bot = new Bot({token: 'xoxb-184173361953-Ihs6gMM7kiCn45exsbvN0Eoc', autoReconnect: true, autoMark: true});
 //test redis
 client.on('error', (err) => {
   console.log('Error ' + err);
@@ -195,25 +195,25 @@ bot.respondTo('', (message, channel, user) => {
   let tolerance = 2;
 
   //get youtube
-  if (distance <= tolerance && commandyoutube !== 'youtube') {
+  if (distance <= tolerance && commandyoutube !=="youtube") {
     bot.send(`Looks like you were trying to get the youtube search, ${user.name}. Try with youtube command!`, channel);
   }
 
   let distance1 = natural.LevenshteinDistance('wiki', commandyoutube);
   //get wiki
-  if (distance1 <= tolerance && commandyoutube !== 'wiki') {
+  if (distance1 <= tolerance && commandyoutube !=="wiki") {
     bot.send(`Looks like you were trying to get the wiki search, ${user.name}. Try with wiki command!`, channel);
   }
 
   let distance2 = natural.LevenshteinDistance('google', commandyoutube);
   //get wiki
-  if (distance2 <= tolerance && commandyoutube !== 'google') {
+  if (distance2 <= tolerance && commandyoutube !=="google") {
     bot.send(`Looks like you were trying to get the google search, ${user.name}. Try with google command!`, channel);
   }
 
   let distance3 = natural.LevenshteinDistance('wolfram', commandyoutube);
   //get wiki
-  if (distance3 <= tolerance && commandyoutube !== 'wolfram') {
+  if (distance3 <= tolerance && commandyoutube !=="wolfram") {
     bot.send(`Looks like you were trying to get the wolfram search, ${user.name}. Try with wolfram command!`, channel);
   }
 
@@ -225,23 +225,18 @@ bot.respondTo('how are you', (message, channel, user) => {
 
 
 
-bot.respondTo({
-  mention: true
-}, (message, channel, user) => {
-  let args = getArgs(message.text);
-
-  let city = args.join(' ');
-
-  getWeather(city, (error, fullName, description, temperature) => {
-    if (error) {
-      bot.send(error.message, channel);
-      return;
-    }
-    bot.send('ok', channel);
-    // bot.send(`The weather for ${fullName} is ${description} with a temperature of
-    // ${Math.round(temperature)} celsius.`, channel);
-  });
-});
+// bot.respondTo('google',(message,channel,user) => {
+//   bot.send(`Looks like you were trying to get the google search, ${user.name}. Try with google command!`, channel);
+// })
+// bot.respondTo('youtube',(message,channel,user) => {
+//   bot.send(`Looks like you were trying to get the youtube search, ${user.name}. Try with youtube command!`, channel);
+// })
+// bot.respondTo('wolfram',(message,channel,user) => {
+//   bot.send(`Looks like you were trying to get the wolfram search, ${user.name}. Try with wolfram command!`, channel);
+// })
+// bot.respondTo('wiki',(message,channel,user) => {
+//   bot.send(`Looks like you were trying to get the wiki search, ${user.name}. Try with wiki command!`, channel);
+// })
 
 /**
  * inflectorCount
@@ -323,7 +318,7 @@ bot.respondTo('wolfram', (message, channel, user) => {
       }
     });
 
-}, true);
+});
 
 /**
  * WIKI API
@@ -395,7 +390,7 @@ bot.respondTo('wiki', (message, channel, user) => {
   });
 
   //search wolfram goes here
-}, true);
+});
 
 /**
  * YOUTUBE SEARCH
@@ -443,7 +438,7 @@ bot.respondTo('youtube', (message, channel, user) => {
 
   });
 
-}, true);
+});
 
 /**
  * GOOGLE CUSTOM SEARCH
@@ -480,7 +475,7 @@ bot.respondTo('google', (message, channel, user) => {
   // bot.send('I\'m sorry, I couldn\'t find anything on that subject. Try another
   // one!', channel);
 
-}, true);
+});
 
 /**
  * ADD TODO >
@@ -520,87 +515,4 @@ bot.respondTo('retrieve', (message, channel, user) => {
 /**
  * set note taking function for bot
  */
-//take note 
-bot.respondTo('take note', (message, channel, user) => {
-  let args = getArgs(message.text);
 
-  switch (args[0]) {
-    case 'add':
-      addNote(user.name, args.slice(1).join(' '), channel);
-      break;
-
-   
-    case 'delete':
-      removeNoteOrNoteList(user.name, args[1], channel);
-      break;
-
-    case 'help':
-      bot.send('Taking notes with \`take note add [TASK]\`or remove them with \`take note delete [NOTE_NUMBER]\` or \`take note delete all' +'l\`',
-      channel);
-      break;
-
-    default:
-      showNotes(user.name, channel);
-      break;
-  }
-}, true);
-
-//================================================= todo show list todo
-function showNotes(name, channel) {
-  client.smembers(name, (err, set) => {
-    if (err || set.length < 1) {
-      bot.send(`You don\'t have any notes listed yet, ${name}!`, channel);
-      return;
-    }
-
-    bot.send(`${name}'s notes list:`);
-
-    set.forEach((note, index) => {
-      bot.send(`${index + 1}. ${note}`, channel);
-    });
-  });
-}
-
-function addNote(name, note, channel) {
-  if (note === '') {
-    bot.send('Usage: \`take note add [NOTE]\`', channel);
-    return;
-  }
-
-  client.sadd(name, note);
-  bot.send('You added a note!', channel);
-  showNotes(name, channel);
-}
-
-//remove task in todo list
-function removeNoteOrNoteList(name, target, channel) {
-  if (typeof target === 'string' && target === 'all') {
-    client.del(name);
-    bot.send('Note list cleared!', channel);
-    return;
-  }
-
-  let noteNum = parseInt(target, 10);
-
-  if (Number.isNaN(noteNum)) {
-    bot.send('Usage: \`take note delete [NOTE_NUMBER]\` or \`take note delete all\`', channel);
-    return;
-  }
-
-  // get the set and the exact task
-  client.smembers(name, (err, set) => {
-    if (err || set.length < 1) {
-      bot.send(`You don\'t have any notes to delete, ${name}!`, channel);
-      return;
-    }
-
-    if (noteNum > set.length || noteNum <= 0) {
-      bot.send('Oops, that note doesn\'t exist!', channel);
-      return;
-    }
-
-    client.srem(name, set[noteNum - 1]);
-    bot.send('You deleted a note!', channel);
-    showNotes(name, channel);
-  });
-}
