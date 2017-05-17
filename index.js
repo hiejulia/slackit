@@ -60,9 +60,11 @@ const inflectorCount = natural.CountInflector;
 // console.log(inflectorCount.nth(42));
 // console.log(inflectorCount.nth(111)); 
 
-const WEBHOOK_URL = 'https://hooks.slack.com/services/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';
+// const WEBHOOK_URL = 'https://hooks.slack.com/services/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';
 
-
+/**
+ * wolfram token declare
+ */
 const WOLFRAM_TOKEN = 'T8PVE4-277RJ5UK43';
 const Client = require('node-wolfram');
 const wolfram = new Client(WOLFRAM_TOKEN);
