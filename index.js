@@ -23,6 +23,21 @@ classifier.train();
 console.log(classifier.classify('will it drizzle today'));
 console.log(classifier.classify('will it be cold out'));
 
+classifier.save('classifier.json', (err, classifier) => {
+  // the classifier is saved to the classifier.json file!
+});
+
+
+/**
+ * RETRIEVE FROM CLASSIFIER JSON FILE TRAINING
+ */
+natural.BayesClassifier.load('classifier.json', null, (err, classifier) => {
+  if (err) {
+    throw err;
+  }
+
+  console.log(classifier.classify('will it drizzle today'));
+});
 /**
  * TOKENIZER
  */
