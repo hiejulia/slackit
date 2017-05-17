@@ -484,7 +484,7 @@ bot.respondTo('store', (message, channel, user) => {
 
   client.set(key, value, (err) => {
     if (err) {
-      bot.send('Oops! I tried to store something but something went wrong.:( Please provide your command in this structure [key] [value]', channel);
+      bot.send('Oops! I tried to store something but something went wrong.:(', channel);
     } else {
       bot.send(`Okay ${user.name}, I will remember that for you.`, channel);
     }
