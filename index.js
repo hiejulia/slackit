@@ -11,21 +11,21 @@ const request = require('superagent');
 // import the natural library
 const natural = require('natural');
 //classifier
-const classifier = new natural.BayesClassifier();
-classifier.addDocument('is it hot', ['temperature', 'question','hot']);
-classifier.addDocument('is it cold', ['temperature', 'question', 'cold']);
-classifier.addDocument('will it rain today', ['conditions', 'question', 'rain']);
-classifier.addDocument('is it drizzling', ['conditions', 'question', 'rain']);
+// const classifier = new natural.BayesClassifier();
+// classifier.addDocument('is it hot', ['temperature', 'question','hot']);
+// classifier.addDocument('is it cold', ['temperature', 'question', 'cold']);
+// classifier.addDocument('will it rain today', ['conditions', 'question', 'rain']);
+// classifier.addDocument('is it drizzling', ['conditions', 'question', 'rain']);
 
-classifier.train();
+// classifier.train();
 
 
-console.log(classifier.classify('will it drizzle today'));
-console.log(classifier.classify('will it be cold out'));
+// console.log(classifier.classify('will it drizzle today'));
+// console.log(classifier.classify('will it be cold out'));
 
-classifier.save('classifier.json', (err, classifier) => {
-  // the classifier is saved to the classifier.json file!
-});
+// classifier.save('classifier.json', (err, classifier) => {
+//   // the classifier is saved to the classifier.json file!
+// });
 
 
 /**
@@ -62,7 +62,9 @@ const inflectorCount = natural.CountInflector;
 const WEBHOOK_URL = 'https://hooks.slack.com/services/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';
 
 
-
+const WOLFRAM_TOKEN = 'T8PVE4-277RJ5UK43';
+const Client = require('node-wolfram');
+const wolfram = new Client(WOLFRAM_TOKEN);
 //API wiki
 const wikiAPI = "https://en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&exintro=&explaintext=&titles="
 const wikiURL = 'https://en.wikipedia.org/wiki/';
