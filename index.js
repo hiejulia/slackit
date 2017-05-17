@@ -523,13 +523,14 @@ bot.respondTo('youtube',(message,channel, user) => {
       return;
     } 
     
-    else {
-let resulthere = Object.keys(result.items[0].id.videoId);
-      bot.send(resulthere, channel);
+    
+let resulthere = result.items[0].id.videoId;
+let sendthis = youtubeURL+resulthere;
+
+      bot.send(sendthis, channel);
 
 
-    }
-
+  
       //bot.send('I\'m sorry, I couldn\'t find anything on that subject. Try another one!', channel);
     
   });
