@@ -80,7 +80,7 @@ const client = redis.createClient();
  * BOT
  */
 const bot = new Bot({
-  token: 'xoxb-184532693090-S2qWSGW9uBttQlTPGnSi6j8x',
+  token: 'xoxb-184602812660-hL62FI3zYX9fFp1nBeovWVzy',
   autoReconnect: true,
   autoMark: true
 });
@@ -156,19 +156,20 @@ function getWeather(location, callback) {
 /**
  * WIKI API ADD
  */
-function getWikiSummary(term, cb) {
+function getWiki(term, cb) {//get term
   // replace spaces with unicode
   let parameters = term.replace(/ /g, '%20');
 //call superagent
-request.get(wikiAPI+parameters)
+request.get(wikiAPI+parameters)//api+q
 .end((err, response) =>{
   if(err){
     cb(err);
-    return;
+    return;//return nothing
 
   }
+  //ok
 let url = wikiURL + parameters;
-cb(null, JSON.parse(response.text),url);
+cb(null, JSON.parse(response.text),url);//send response text + url
 
 
 });
@@ -280,6 +281,12 @@ client.zrevrange('scores', 0, -1, 'withscores', (err, set) => {
 
 bot.respondTo('hello bot',(message,channel, user) => {
   bot.send(`Hello ${user.name}`,channel);
+
+
+})
+
+bot.respondTo('bye',(message,channel, user) => {
+  bot.send(`Bye ${user.name}`,channel);
 
 
 })
@@ -416,8 +423,9 @@ bot.respondTo('wiki',(message,channel, user) => {
   // set the typing indicator before we start the wikimedia request
   // the typing indicator will be removed once a message is sent
   bot.setTypingIndicator(message.channel);
+  
 
-  getWikiSummary(args, (err, result, url) => {
+  getWiki(args, (err, result, url) => {
     if (err) {
       bot.send(`I\'m sorry, but something went wrong with your query`, channel);
       console.error(err);
@@ -450,6 +458,7 @@ bot.respondTo('wiki',(message,channel, user) => {
       paragraphs.forEach((paragraph) => {
         if (paragraph !== '') {
           bot.send(`> ${paragraph}`, channel);
+          
         }
       });
     } else {
