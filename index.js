@@ -88,7 +88,7 @@ const client = redis.createClient();
  * BOT
  */
 const bot = new Bot({
-  token: 'xoxb-184642942900-WGQpE21yUl9SB5RzkWrtRuf4',
+  token: 'xoxb-184684143764-28XVrPOt7PZRw8IBZ7JMtTea',
   autoReconnect: true,
   autoMark: true
 });
@@ -164,8 +164,45 @@ function getWeather(location, callback) {
       callback(data.name, description, data.main.temp);
     });
 }
+/**
+ * WOLFRAM QUERY 
+ * 
+ */
+//from query search
 
+  function queryWolfram(textmsg, cb ){  
+    //query search the message
+    wolfram.query(textmsg,(err, result) => {
+      if (err) {
+      return callback(err);
+    }
+    // if the query didn't fail, but the message wasn't understood 
+    // then send a generic error message
+    if (result.queryresult.$.success === 'false') {
+      return done(null, 'Sorry, something went wrong, please try again');
+    }
+    let msg = '';
 
+    for (let i = 0; i < result.queryresult.pod.length; i++) {
+      let pod = result.queryresult.pod[i];
+      msg += pod.$.title + ': \n';
+
+      for (let j = 0; j < pod.subpod.length; j++) {
+        let subpod = pod.subpod[j];
+
+        for (let k = 0; k <subpod.plaintext.length; k++) {
+          let text = subpod.plaintext[k];
+          msg += '\t' + text + '\n';
+        }
+      }
+    }
+
+    callback(null, msg);
+  });
+  
+   
+
+  }
 /**
  * WIKI API ADD
  */
@@ -435,7 +472,7 @@ bot.respondTo('help with wolfram',(message, channel, user) => {
   bot.send(`To use my Wolfram functionality, type \`wolfram\` followed by your search query`, channel);
 })
 
-bot.respondTo('wolfran',(message,channel, user) => {
+bot.respondTo('wolfram',(message,channel, user) => {
   //check not bot
   if (user && user.is_bot) {
     return;
@@ -450,47 +487,21 @@ bot.respondTo('wolfran',(message,channel, user) => {
   }
 //typing indicator
   bot.setTypingIndicator(message.channel);
-  
-//getwiki calll
-  getWiki(args, (err, result, url) => {
+ queryWolfram(args, (err, result) => {
     if (err) {
       bot.send(`I\'m sorry, but something went wrong with your query`, channel);
       console.error(err);
       return;
-    }
+    } 
+    
 
-    let pageID = Object.keys(result.query.pages)[0];
 
-    // -1 indicates that the article doesn't exist
-    if (parseInt(pageID, 10) === -1) {
-      bot.send(`That page does not exist yet, perhaps ${user.name} would like to create it:`, channel);
-      bot.send(url, channel);
-      return;
-    }
+      bot.send('this wolfram works', channel);
 
-    let page = result.query.pages[pageID];
-    let summary = page.extract;
 
-    if (/may refer to/i.test(summary)) {
-      bot.send('Your search query may refer to multiple things, please be more specific or visit:', channel);
-      bot.send(url, channel);
-      return;
-    }
-
-    if (summary !== '') {
-      bot.send(url, channel);
-
-      let paragraphs = summary.split('\n');
-
-      paragraphs.forEach((paragraph) => {
-        if (paragraph !== '') {
-          bot.send(`> ${paragraph}`, channel);
-          
-        }
-      });
-    } else {
-      bot.send(`I\'m sorry, I couldn\'t find anything on subject ${args}. Try another one!`, channel);
-    }
+  
+     
+    
   });
 }, true);
 
