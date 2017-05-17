@@ -170,39 +170,7 @@ function getWeather(location, callback) {
  */
 //from query search
 
-  function queryWolfram(textmsg, cb ){  
-    //query search the message
-    wolfram.query(textmsg,(err, result) => {
-      if (err) {
-      return callback(err);
-    }
-    // if the query didn't fail, but the message wasn't understood 
-    // then send a generic error message
-    if (result.queryresult.$.success === 'false') {
-      return done(null, 'Sorry, something went wrong, please try again');
-    }
-    let msg = '';
 
-    for (let i = 0; i < result.queryresult.pod.length; i++) {
-      let pod = result.queryresult.pod[i];
-      msg += pod.$.title + ': \n';
-
-      for (let j = 0; j < pod.subpod.length; j++) {
-        let subpod = pod.subpod[j];
-
-        for (let k = 0; k <subpod.plaintext.length; k++) {
-          let text = subpod.plaintext[k];
-          msg += '\t' + text + '\n';
-        }
-      }
-    }
-
-    callback(null, msg);
-  });
-  
-   
-
-  }
 /**
  * WIKI API ADD
  */
@@ -486,23 +454,31 @@ bot.respondTo('wolfram',(message,channel, user) => {
     return;
   }
 //typing indicator
-  bot.setTypingIndicator(message.channel);
- queryWolfram(args, (err, result) => {
-    if (err) {
-      bot.send(`I\'m sorry, but something went wrong with your query`, channel);
-      console.error(err);
-      return;
-    } 
-    
-
-
-      bot.send('this wolfram works', channel);
-
-
   
-     
-    
-  });
+wolfram.query(args, function(err, result) {
+  bot.setTypingIndicator(message.channel);
+    if(err)
+        console.log(err);
+    else
+    {
+        for(var a=0; a<result.queryresult.pod.length; a++)
+        {
+            var pod = result.queryresult.pod[a];
+            console.log(pod.$.title,": ");
+            for(var b=0; b<pod.subpod.length; b++)
+            {
+                var subpod = pod.subpod[b];
+                for(var c=0; c<subpod.plaintext.length; c++)
+                {
+                    var text = subpod.plaintext[c];
+                    console.log('\t', text);
+                    bot.send(`${text}`, channel);
+                }
+            }
+        }
+    }
+});
+
 }, true);
 
 
