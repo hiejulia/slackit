@@ -353,15 +353,31 @@ bot.respondTo('', (message, channel, user) => {
 
   let tolerance = 2;
 
-
+//get youtube 
   if (distance <= tolerance) {
     bot.send(`Looks like you were trying to get the youtube search, ${user.name}. Try with youtube command!`, channel);
   }
  
+let distance1 = natural.LevenshteinDistance('wiki', commandyoutube);
+//get wiki 
+  if (distance1 <= tolerance) {
+    bot.send(`Looks like you were trying to get the wiki search, ${user.name}. Try with wiki command!`, channel);
+  }
+
+
+let distance2 = natural.LevenshteinDistance('google', commandyoutube);
+//get wiki 
+  if (distance2<= tolerance) {
+    bot.send(`Looks like you were trying to get the google search, ${user.name}. Try with google command!`, channel);
+  }
 
 
 
-
+let distance3 = natural.LevenshteinDistance('wolfram', commandyoutube);
+//get wiki 
+  if (distance3<= tolerance) {
+    bot.send(`Looks like you were trying to get the wolfram search, ${user.name}. Try with wolfram command!`, channel);
+  }
 
 
 });
