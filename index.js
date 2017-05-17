@@ -345,6 +345,18 @@ bot.respondTo('', (message, channel, user) => {
     bot.send(`You are welcome ${user.name} :)`,channel)
 
   }
+
+  //youtube > handle error
+  let commandyoutube = message.text;
+
+  let distance = natural.LevenshteinDistance('youtube', commandyoutube);
+
+  let tolerance = 2;
+
+
+  if (distance <= tolerance) {
+    bot.send(`Looks like you were trying to get the youtube search, ${user.name}. Try with youtube command!`, channel);
+  }
  
 
 
@@ -553,6 +565,7 @@ bot.respondTo('help with youtube video',(message, channel, user) => {
 })
 
 bot.respondTo('youtube',(message,channel, user) => {
+  //response to youtube
   if (user && user.is_bot) {
     return;
   }
