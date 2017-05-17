@@ -27,6 +27,7 @@
     "botkit": "^0.5.4",
     "express": "^4.15.2",
     "http": "0.0.0",
+    "jquery": "^3.2.1",
     "natural": "^0.5.1",
     "node-wolfram": "0.0.1",
     "redis": "^2.7.1",

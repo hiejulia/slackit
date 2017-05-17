@@ -133,3 +133,10 @@ APP NAME: Slackit
 APPID: T8PVE4-277RJ5UK43
 
 USAGE TYPE: Personal/Non-commercial Only
+
+
+
+
+
+///youtube api key
+AIzaSyDNHj6cNd3SATEpuS-TGxEgWg9m9L42SmA
