@@ -473,9 +473,11 @@ let url1 = 'https://www.youtube.com/watch?v=RzhAS_GnJIc';
 
 
 
-
+/**
+ * ADD TODO >  
+ */
 bot.respondTo('store', (message, channel, user) => {
-  let args = getArgs(message.text);
+  let args = getArgs(message.text);//get args
 
   let key = args.shift();
   let value = args.join(' ');
