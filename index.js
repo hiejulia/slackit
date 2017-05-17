@@ -91,7 +91,7 @@ const client = redis.createClient();
  * BOT
  */
 const bot = new Bot({
-  token: 'xoxb-184684143764-28XVrPOt7PZRw8IBZ7JMtTea',
+  token: 'xoxb-184807119189-mGVowUqVY7s55cMrZBj69G2S',
   autoReconnect: true,
   autoMark: true
 });
@@ -312,21 +312,49 @@ client.zrevrange('scores', 0, -1, 'withscores', (err, set) => {
 // bot.respondTo(/(hello|hi) (bot|assistantbot)/g.test(msg),(message,channel,user) => {
 //   bot.send(`Hello ${user.name}`,channel)
 // })
+// respond to any message that comes through
+bot.respondTo('', (message, channel, user) => {
 
-bot.respondTo('hello bot',(message,channel, user) => {
-  bot.send(`Hello ${user.name}`,channel);
+  let tokenizedMessage = tokenizer.tokenize(message.text);
+
+  // bot.send(`Tokenized message: ${JSON.stringify(tokenizedMessage)}`, channel);
+
+  if(JSON.stringify(tokenizedMessage).indexOf("hello") > -1){
+    bot.send(`Hello ${user.name}`,channel);
+
+  }
+
+   if(JSON.stringify(tokenizedMessage).indexOf("bye") > -1){
+
+    
+    bot.send(`Bye ${user.name}`,channel);
+
+  }
 
 
+  if(JSON.stringify(tokenizedMessage).indexOf("hey") > -1){
+    bot.send(`Yes ${user.name}, what's up?`,channel)
+
+  }
+
+    if(JSON.stringify(tokenizedMessage).indexOf("thanks") > -1){
+    bot.send(`You are welcome ${user.name} :)`,channel)
+
+  }
+ 
+
+
+
+
+
+
+});
+
+bot.respondTo('how are you',(message,channel, user) => {
+  bot.send(`I am fine. Thanks.And you, ${user.name} ?`,channel)
 })
 
-bot.respondTo('bye',(message,channel, user) => {
-  bot.send(`Bye ${user.name}`,channel);
-  //test api
 
-
-
-
-})
 /**
  * TOKENIZE
  */
@@ -402,9 +430,6 @@ bot.respondTo('what day is it', (message, channel) => {
 
 
 
-bot.respondTo('hey bot',(message,channel, user) => {
-  bot.send(`Yes ${user.name}, what's up?`,channel)
-})
 
 bot.respondTo('github',(message,channel, user) => {
   request
@@ -420,14 +445,7 @@ bot.respondTo('github',(message,channel, user) => {
   });
 })
 
-//say thanks
-bot.respondTo('thanks',(message,channel, user) => {
-  bot.send(`You are welcome ${user.name} :)`,channel)
-})
 
-bot.respondTo('how are you',(message,channel, user) => {
-  bot.send(`I am fine. Thanks.And you, ${user.name} ?`,channel)
-})
 
 //uptime
 bot.respondTo('uptime',(message, channel,user) => {

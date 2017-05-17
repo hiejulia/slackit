@@ -146,3 +146,16 @@ AIzaSyDNHj6cNd3SATEpuS-TGxEgWg9m9L42SmA
 
 //custom google search api 
 AIzaSyCVOLCG6T-cS-PjPMjCwdc8hgeDZvkcq9E	
+
+
+
+//======================
+tokenize
+
+> ap dung cho tat ca cac send message > 
+
+
+
+
+//start bot
+SLACK_TOKEN=xoxb-184801834245-C1eJp0NUvK7fWr1jqmTJ9Y2s node index.js
