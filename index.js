@@ -51,11 +51,11 @@ const bot = new Bot({
   autoReconnect: true,
   autoMark: true
 });
-
+//test redis 
 client.on('error', (err) => {
     console.log('Error ' + err);
 });
-
+//connect to redis
 client.on('connect', () => {
   console.log('Connected to Redis!');
 });
