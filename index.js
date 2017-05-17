@@ -35,12 +35,13 @@ const db = mongojs('127.0.0.1:27017/BotDB',['ReferenceDocuments']);
 /**
  * RETRIEVE FROM CLASSIFIER JSON FILE TRAINING
  */
-natural.BayesClassifier.load('classifier.json', null, (err, classifier) => {
+let classifier;
+natural.BayesClassifier.load('classifier.json', null, (err, clsfr) => {
   if (err) {
     throw err;
   }
 
-  console.log(classifier.classify('will it drizzle today'));
+   classifier = clsfr;//set up with classifier
 });
 /**
  * TOKENIZER
@@ -87,6 +88,9 @@ const weatherURL = `http://api.openweathermap.org/data/2.5/weather?&units=metric
 const mathjs = 'http://api.mathjs.org/v1/';
 
 const client = redis.createClient();
+
+
+
 /**
  * BOT
  */
