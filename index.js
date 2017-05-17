@@ -8,6 +8,7 @@ const router = express.Router();
 const redis = require('redis');
 const Bot = require('./Bot');
 const Botkit = require('botkit');
+const os = require('os'); 
 const request = require('superagent');
 // import the natural library
 const natural = require('natural');
@@ -420,6 +421,10 @@ bot.respondTo('github',(message,channel, user) => {
 //say thanks
 bot.respondTo('thanks',(message,channel, user) => {
   bot.send(`You are welcome ${user.name} :)`,channel)
+})
+
+bot.respondTo('how are you',(message,channel, user) => {
+  bot.send(`I am fine. Thanks.And you, ${user.name} ?`,channel)
 })
 
 //uptime
