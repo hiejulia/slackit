@@ -32,7 +32,7 @@ class Bot {
       let team = this.slack.dataStore.getTeamById(this.slack.activeTeamId);
 
       this.name = user.name;
-      this.id = user.id;
+      this.id = user.id;//add user id
 
       console.log(`Connected to ${team.name} as ${user.name}`);      
     });
@@ -105,7 +105,7 @@ class Bot {
   }
 
 respondTo(opts, callback, start) {
-  if (!this.id) {
+if (!this.id) {
     // if this.id doesn't exist, wait for slack to connect
     // before continuing
     this.slack.on(CLIENT_EVENTS.RTM.RTM_CONNECTION_OPENED, () => {

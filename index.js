@@ -10,6 +10,22 @@ const Botkit = require('botkit');
 const request = require('superagent');
 // import the natural library
 const natural = require('natural');
+//classifier
+const classifier = new natural.BayesClassifier();
+classifier.addDocument('is it hot', ['temperature', 'question','hot']);
+classifier.addDocument('is it cold', ['temperature', 'question', 'cold']);
+classifier.addDocument('will it rain today', ['conditions', 'question', 'rain']);
+classifier.addDocument('is it drizzling', ['conditions', 'question', 'rain']);
+
+classifier.train();
+
+
+console.log(classifier.classify('will it drizzle today'));
+console.log(classifier.classify('will it be cold out'));
+
+/**
+ * TOKENIZER
+ */
 // initalize the tokenizer
 const tokenizer = new natural.WordTokenizer();
 // initialize the stemmer
@@ -106,7 +122,7 @@ function getWeather(location, callback) {
         return callback(new Error('Sorry, I can\'t find that location!')); 
       }
 
-      // console.log(data);
+      console.log(data);
 
       let weather = [];
       data.weather.forEach((feature) => {
@@ -295,7 +311,7 @@ bot.respondTo('hello bot',(message,channel, user) => {
 //   }}, true);
 
 
-bot.respondTo('askweather', (message, channel, user) => {
+bot.respondTo({ mention: true }, (message, channel, user) => {
   let args = getArgs(message.text);
 
   let city = args.join(' ');
@@ -305,10 +321,10 @@ bot.respondTo('askweather', (message, channel, user) => {
       bot.send(error.message, channel);
       return;
     }
-bot.send('yes here');
+bot.send('ok',channel);
     // bot.send(`The weather for ${fullName} is ${description} with a temperature of ${Math.round(temperature)} celsius.`, channel);
   });
-}, true);
+});
 
 /**
  * inflectorCount
