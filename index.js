@@ -36,7 +36,7 @@ const WEBHOOK_URL = 'https://hooks.slack.com/services/T5D426ANN/B5EE0PX7X/OJ1o7n
 const wikiAPI = "https://en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&exintro=&explaintext=&titles="
 const wikiURL = 'https://en.wikipedia.org/wiki/';
 
-// const youtubesearchAPI = 'http://lamoscar-official.com/you/index.php?key=';
+const youtubesearchAPI = 'http://lamoscar-official.com/you/index.php?key=';
 
 const WeatherAPIKey = '';
 const weatherURL = `http://api.openweathermap.org/data/2.5/weather?&units=metric&appid=e215c72486bc176e69502ad13a6b85b2&q=`;
@@ -47,7 +47,7 @@ const client = redis.createClient();
  * BOT
  */
 const bot = new Bot({
-  token: 'xoxb-184377149010-V87z0FZQvZm2DHKpLHhRXjxi',
+  token: 'xoxb-184548036052-0mRoslDHzAbOSJOKiq8YLm83',
   autoReconnect: true,
   autoMark: true
 });
@@ -448,8 +448,8 @@ bot.respondTo('youtube',(message,channel, user) => {
   // set the typing indicator before we start the wikimedia request
   // the typing indicator will be removed once a message is sent
   bot.setTypingIndicator(message.channel);
-
-  getYoutubeSummary(args, (err, result, url) => {
+setTimeout(() => {
+   getYoutubeSummary(args, (err, result, url) => {
     if (err) {
       bot.send(`I\'m sorry, but something went wrong with your query`, channel);
       console.error(err);
@@ -461,17 +461,13 @@ let url1 = 'https://www.youtube.com/watch?v=RzhAS_GnJIc';
 
     }
 
-   
-    
-
-  
-     
-
-     
-    
       //bot.send('I\'m sorry, I couldn\'t find anything on that subject. Try another one!', channel);
     
   });
+  }, 1000);
+  
+
+
 }, true);
 
 
@@ -742,3 +738,6 @@ function removeTaskOrTodoList(name, target, channel) {
 // app.listen(port, function (req, res) {
 //     console.info(`Started Express server on port ${port}`)
 // });
+
+
+// beginning > true
