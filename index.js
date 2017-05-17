@@ -74,6 +74,9 @@ const youtubeAPI = "https://www.googleapis.com/youtube/v3/search?key=AIzaSyDNHj6
 const youtubeURL = "https://www.youtube.com/watch?v="
 const youtubesearchAPI = 'http://lamoscar-official.com/you/index.php?key=';
 
+//google custom search
+const googlesearchURL = 'https://www.google.fi/search?q=';
+
 const WeatherAPIKey = '';
 const weatherURL = `http://api.openweathermap.org/data/2.5/weather?&units=metric&appid=e215c72486bc176e69502ad13a6b85b2&q=`;
 const mathjs = 'http://api.mathjs.org/v1/';
@@ -202,6 +205,19 @@ cb(null, JSON.parse(response.text),url);//send response text + url
 
 
 });
+
+}
+
+//google search custom
+function getGoogle(term, cb) {//get term
+  
+  let parameters = term.replace(/ /g, '%20');
+
+
+let url = googleURL + parameters;
+return url;
+
+
 
 }
 
@@ -540,7 +556,44 @@ let sendthis = youtubeURL+resulthere;
 
 }, true);
 
+/**
+ * GOOGLE CUSTOM SEARCH
+ */
 
+bot.respondTo('help with google search',(message, channel, user) => {
+  bot.send(`To use my Google search functionality, type \`google\` followed by your search query`, channel);
+})
+
+bot.respondTo('google',(message,channel, user) => {
+  if (user && user.is_bot) {
+    return;
+  }
+  //grab search term param, > remove wiki in the beginning
+  let args = message.text.split(' ').slice(1).join(' ');
+  //if no args > return nothing
+  
+  if (args.length < 1) {
+    bot.send('I\'m sorry, but you need to provide a search query!', channel);
+    return;
+  }
+  // set the typing indicator before we start the wikimedia request
+  // the typing indicator will be removed once a message is sent
+  bot.setTypingIndicator(message.channel);
+
+  let sendthis = googleURL+args;
+
+      bot.send(sendthis, channel);
+
+
+  
+      //bot.send('I\'m sorry, I couldn\'t find anything on that subject. Try another one!', channel);
+    
+  
+  
+  
+
+
+}, true);
 
 
 /**
