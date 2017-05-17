@@ -47,7 +47,7 @@ const client = redis.createClient();
  * BOT
  */
 const bot = new Bot({
-  token: 'xoxb-184548036052-0mRoslDHzAbOSJOKiq8YLm83',
+  token: 'xoxb-184553397524-JMw1xRhu9GZKwm8GR8gZ9p9w',
   autoReconnect: true,
   autoMark: true
 });
@@ -484,7 +484,7 @@ bot.respondTo('store', (message, channel, user) => {
 
   client.set(key, value, (err) => {
     if (err) {
-      bot.send('Oops! I tried to store something but something went wrong :(', channel);
+      bot.send('Oops! I tried to store something but something went wrong.:( Please provide your command in this structure [key] [value]', channel);
     } else {
       bot.send(`Okay ${user.name}, I will remember that for you.`, channel);
     }
