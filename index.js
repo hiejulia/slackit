@@ -580,7 +580,7 @@ bot.respondTo('google',(message,channel, user) => {
   // the typing indicator will be removed once a message is sent
   bot.setTypingIndicator(message.channel);
 
-  let sendthis = googleURL+args;
+  let sendthis = googlesearchURL+args;
 
       bot.send(sendthis, channel);
 
