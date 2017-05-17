@@ -435,21 +435,7 @@ bot.respondTo('help with wolfram',(message, channel, user) => {
   bot.send(`To use my Wolfram functionality, type \`wolfram\` followed by your search query`, channel);
 })
 
-
-
-
-
-/**
- * WIKI API 
- * 
- */
-bot.respondTo('help with wiki',(message, channel, user) => {
-  bot.send(`To use my Wikipedia functionality, type \`wiki\` followed by your search query`, channel);
-})
-/**
- * wiki
- */
-bot.respondTo('wiki',(message,channel, user) => {
+bot.respondTo('wolfran',(message,channel, user) => {
   //check not bot
   if (user && user.is_bot) {
     return;
@@ -506,6 +492,38 @@ bot.respondTo('wiki',(message,channel, user) => {
       bot.send(`I\'m sorry, I couldn\'t find anything on subject ${args}. Try another one!`, channel);
     }
   });
+}, true);
+
+
+
+
+/**
+ * WIKI API 
+ * 
+ */
+bot.respondTo('help with wiki',(message, channel, user) => {
+  bot.send(`To use my Wikipedia functionality, type \`wiki\` followed by your search query`, channel);
+})
+/**
+ * wiki
+ */
+bot.respondTo('wiki',(message,channel, user) => {
+  //check not bot
+  if (user && user.is_bot) {
+    return;
+  }
+  //grab search term param, > remove wiki in the beginning
+  let args = message.text.split(' ').slice(1).join(' ');
+  //if no args > return nothing
+  
+  if (args.length < 1) {
+    bot.send(`You need to provide a search query first ${user.name}!`, channel);
+    return;
+  }
+//typing indicator
+  bot.setTypingIndicator(message.channel);
+  
+//search wolfram goes here
 }, true);
 
 
