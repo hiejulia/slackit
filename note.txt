@@ -122,3 +122,14 @@ API integration :
 + https://newton.now.sh/
 + http://api.mathjs.org/
 + https://www.programmableweb.com/api/udacity-course-catalog
+
+
+
+
+
+// wolframAPI
+APP NAME: Slackit
+
+APPID: T8PVE4-277RJ5UK43
+
+USAGE TYPE: Personal/Non-commercial Only
