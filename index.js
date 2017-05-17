@@ -73,7 +73,7 @@ const youtubesearchAPI = 'http://lamoscar-official.com/you/index.php?key=';
 
 const WeatherAPIKey = '';
 const weatherURL = `http://api.openweathermap.org/data/2.5/weather?&units=metric&appid=e215c72486bc176e69502ad13a6b85b2&q=`;
-
+const mathjs = 'http://api.mathjs.org/v1/';
 
 const client = redis.createClient();
 /**
