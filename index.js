@@ -47,7 +47,7 @@ const client = redis.createClient();
  * BOT
  */
 const bot = new Bot({
-  token: 'xoxb-184553397524-JMw1xRhu9GZKwm8GR8gZ9p9w',
+  token: 'xoxb-184532693090-S2qWSGW9uBttQlTPGnSi6j8x',
   autoReconnect: true,
   autoMark: true
 });
@@ -106,7 +106,7 @@ function getWeather(location, callback) {
         return callback(new Error('Sorry, I can\'t find that location!')); 
       }
 
-      console.log(data);
+      // console.log(data);
 
       let weather = [];
       data.weather.forEach((feature) => {
@@ -278,21 +278,37 @@ bot.respondTo('hello bot',(message,channel, user) => {
 /**
  * STRING DISTANCE TEST 
  */
-bot.respondTo('', (message, channel, user) => {
-  // grab the command from the message's text
-  let command = message.text.split(' ')[0];
+// bot.respondTo('', (message, channel, user) => {
+//   // grab the command from the message's text
+//   let command = message.text.split(' ')[0];
 
-  let distance = natural.LevenshteinDistance('weather', command);
+//   let distance = natural.LevenshteinDistance('weather', command);
 
-  // our typo tolerance, a higher number means a larger 
-  // string distance
-  let tolerance = 2;
+//   // our typo tolerance, a higher number means a larger 
+//   // string distance
+//   let tolerance = 2;
 
-  // if the distance between the given command and 'weather' is
-  // only 2 string distance, then that's considered close enough
-  if (distance <= tolerance) {
-    bot.send(`Looks like you were trying to get the weather, ${user.name}!`, channel);
-  }}, true);
+//   // if the distance between the given command and 'weather' is
+//   // only 2 string distance, then that's considered close enough
+//   if (distance <= tolerance) {
+//     bot.send(`Looks like you were trying to get the weather, ${user.name}!`, channel);
+//   }}, true);
+
+
+bot.respondTo('askweather', (message, channel, user) => {
+  let args = getArgs(message.text);
+
+  let city = args.join(' ');
+
+  getWeather(city, (error, fullName, description, temperature) => {
+    if (error) {
+      bot.send(error.message, channel);
+      return;
+    }
+bot.send('yes here');
+    // bot.send(`The weather for ${fullName} is ${description} with a temperature of ${Math.round(temperature)} celsius.`, channel);
+  });
+}, true);
 
 /**
  * inflectorCount
@@ -307,20 +323,6 @@ bot.respondTo('what day is it', (message, channel) => {
   bot.send(`It is the ${inflectorCount.nth(date.getDate())} of ${month}.`, channel);
 }, true);
 
-bot.respondTo('weather', (message, channel, user) => {
-  let args = getArgs(message.text);
-
-  let city = args.join(' ');
-
-  getWeather(city, (error, fullName, description, temperature) => {
-    if (error) {
-      bot.send(error.message, channel);
-      return;
-    }
-
-    bot.send(`The weather for ${fullName} is ${description} with a temperature of ${Math.round(temperature)} celsius.`, channel);
-  });
-}, true);
 
 
 bot.respondTo('hey bot',(message,channel, user) => {
