@@ -9,4 +9,4 @@ Student therefore can study better with assistant bot.
 ###
 This is my 2nd AI bot :smile:
 
-[![Everything Is AWESOME](https://img.youtube.com/vi/StTqXEQ2l-Y/0.jpg)](https://www.youtube.com/watch?v=yOnwruxIdmQ "Everything Is AWESOME")
+[![Everything Is AWESOME](https://repl.it/public/images/bot.png)](https://www.youtube.com/watch?v=yOnwruxIdmQ "Everything Is AWESOME")
