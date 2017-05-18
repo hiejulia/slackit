@@ -8,3 +8,5 @@ Student therefore can study better with assistant bot.
 
 ###
 This is my 2nd AI bot :smile:
+
+[![Everything Is AWESOME](https://img.youtube.com/vi/StTqXEQ2l-Y/0.jpg)](https://www.youtube.com/watch?v=StTqXEQ2l-Y "Everything Is AWESOME")
